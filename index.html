@@ -1,4 +1,6 @@
 <title>Tetiana Kozhushko CV</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,6 +168,9 @@ h2 em{font-family:var(--f-script);font-style:normal;font-weight:400;font-stretch
 .fact + .fact{padding-left:var(--s4);border-left:1px solid #cdbfc3}
 .fact .k{color:var(--ink-soft)}
 .pcontacts{display:none}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (pointer:coarse){.polaroid,.sticky{touch-action:auto;cursor:auto}.drag-hint,.contact .foot span:last-child{display:none}}
+.arr{display:inline-block;vertical-align:.05em}
 .fact .fv{font:700 17px/1.25 var(--f-display);font-stretch:108%}
 
 /* polaroid */
@@ -362,6 +367,14 @@ body.inspect{cursor:crosshair}
   .polaroid{width:230px}
   .sticky{right:-10px;width:150px;font-size:18px}
   .inspect-toggle kbd{display:none}
+  .bar-tools,.drag-hint{display:none!important}
+  .bar{gap:10px;padding-bottom:20px}
+  .tabs{gap:4px;padding-left:12px;padding-right:12px}
+  .tabs a{padding:12px 8px 10px;font-size:10px;letter-spacing:.02em;font-stretch:100%}
+  .hero-meta{font-size:9.5px;flex-wrap:nowrap}
+  .polaroid-wrap{margin-bottom:36px}
+  .sticky{right:-16px;bottom:-44px;width:156px;font-size:17px;padding:12px 12px 14px}
+  .contact .big.lt{font-size:19vw;white-space:nowrap}
 }
 @media (hover:none){.inspect-toggle,.chat-hint,.cursor.you{display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
@@ -519,7 +532,7 @@ body.inspect{cursor:crosshair}
         <p>I teach High Heels classes in Warsaw, so I made the booking app for my own students. I designed it, then built it myself with AI-assisted coding. Students pick a class, pay and check their pass without leaving Telegram.</p>
         <div class="role-chip"><span class="chip solid">Design + build</span><span class="chip">Mobile</span><span class="chip">Live</span></div>
         <span class="open">Open case <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
-      </a><button class="pin" type="button" aria-expanded="false" aria-controls="pin2" aria-label="Comment from Tetiana" style="--x:86%;--y:5%"><span>T</span></button><div class="pin-pop" id="pin2" style="--x:86%;--y:5%" hidden><b>Tetiana <small>comment</small></b>It's live, and you can try it. <a href="https://t.me/tatiheels_booking_bot" target="_blank" rel="noopener">Open in Telegram ↗</a></div></div>
+      </a><button class="pin" type="button" aria-expanded="false" aria-controls="pin2" aria-label="Comment from Tetiana" style="--x:86%;--y:5%"><span>T</span></button><div class="pin-pop" id="pin2" style="--x:86%;--y:5%" hidden><b>Tetiana <small>comment</small></b>It's live, and you can try it. <a href="https://t.me/tatiheels_booking_bot" target="_blank" rel="noopener">Open in Telegram&nbsp;<svg class="arr" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></div></div>
 
       <div class="print" style="--r:-2.2deg;--tr:-2deg" data-spec="Component · Case card"><a class="print-link" href="https://www.behance.net/gallery/258265465/What-About-Tours-Travel-Platform-UXUI-Case-Study" target="_blank" rel="noopener">
         <span class="tape" aria-hidden="true"></span>
@@ -682,8 +695,8 @@ body.inspect{cursor:crosshair}
     <p class="big lt"><span>let's talk</span></p>
     <div class="links">
       <div><span class="k mono">Email</span><span class="val" id="mail">tetianakozhushko12@gmail.com</span><button class="copy" id="copyMail" type="button">Copy email</button></div>
-      <div><span class="k mono">LinkedIn</span><a href="https://www.linkedin.com/in/tetiana-kozhushko" target="_blank" rel="noopener">in/tetiana-kozhushko&nbsp;↗</a></div>
-      <div><span class="k mono">Behance</span><a href="https://www.behance.net/tetianakozhushko" target="_blank" rel="noopener">behance.net/tetianakozhushko&nbsp;↗</a></div>
+      <div><span class="k mono">LinkedIn</span><a href="https://www.linkedin.com/in/tetiana-kozhushko" target="_blank" rel="noopener">in/tetiana-kozhushko&nbsp;<svg class="arr" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
+      <div><span class="k mono">Behance</span><a href="https://www.behance.net/tetianakozhushko" target="_blank" rel="noopener">behance.net/tetianakozhushko&nbsp;<svg class="arr" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
       <div><span class="k mono">Location</span><span class="val">Warsaw, Poland<br>Open to remote</span></div>
     </div>
     <div class="foot mono"><span>Tetiana Kozhushko · 2026</span><span>Psst: press I to see how this page is put together</span></div>
@@ -736,7 +749,7 @@ body.inspect{cursor:crosshair}
 
   // drag the polaroid and the sticky note
   const hint=document.querySelector('.drag-hint');
-  document.querySelectorAll('[data-drag]').forEach(el=>{
+  if(!matchMedia('(pointer:coarse)').matches)document.querySelectorAll('[data-drag]').forEach(el=>{
     let sx,sy,ox=0,oy=0,down=false,lim;
     const sheet=el.closest('.hero')||document.body,PAD=28;
     el.addEventListener('pointerdown',e=>{if(e.button!==0)return;down=true;sx=e.clientX-ox;sy=e.clientY-oy;
