@@ -1,4 +1,7 @@
-<title>Tetiana Kozhushko CV</title>
+<!doctype html>
+<html lang="en"><head><title>Tetiana Kozhushko | UI/UX &amp; Product Designer</title>
+<meta name="description" content="UI/UX and product designer in Warsaw. Explore B2B SaaS, web and mobile case studies, client work and a live booking app.">
+<link rel="canonical" href="https://tetianakozhushko.github.io/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -434,7 +437,15 @@ body.inspect{cursor:crosshair}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 .v-ver:empty{display:none}
-</style>
+
+/* Unified portfolio: a concise introduction, complete on-site case studies. */
+@media screen{
+.hero{padding-top:32px;padding-bottom:48px}.hero-grid{grid-template-columns:minmax(0,1fr) 260px;gap:40px;margin-top:24px}.name .first.name-img{width:min(400px,100%);margin-left:-4px}.name .last{font-size:clamp(36px,6.2vw,76px);letter-spacing:-.04em}.role-wrap{margin-top:24px}.lede{margin-top:36px;font-size:18px;max-width:55ch}.polaroid-wrap{margin-top:40px}.polaroid{width:240px}.facts{grid-template-columns:1fr 1fr;margin-top:32px}.fact:nth-child(3){border-left:0;padding-left:0}.fact:nth-child(n+3){border-top:1px solid #cdbfc3}.cursor.me,.comment{display:none}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.action{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border:1px solid var(--ink);border-radius:4px;font-weight:600;text-decoration:none;font-size:14px}.action.primary{background:var(--ink);color:var(--paper)}.action:hover{background:var(--wine);border-color:var(--wine);color:white}.skip{position:fixed;top:-80px;left:16px;z-index:100;padding:12px;background:var(--paper);color:var(--ink)}.skip:focus{top:16px}
+}
+@media screen and (max-width:800px){.hero-grid{grid-template-columns:minmax(0,1fr)}.polaroid-wrap{display:none}.hero .facts{grid-template-columns:1fr 1fr}.name .first.name-img{width:min(340px,100%)}.name .last{font-size:clamp(30px,9vw,64px)}.hero .fact{padding:12px!important}.hero .fact:nth-child(odd){padding-left:0!important}.hero .fact:nth-child(even){border-left:1px solid #cdbfc3!important}.hero .fact:nth-child(2){border-top:0}.hero-meta span:last-child{font-size:9px}.section{scroll-margin-top:20px}}
+@media screen and (max-width:400px){.hero .facts{grid-template-columns:1fr}.hero .fact:nth-child(even){border-left:0!important;padding-left:0!important}.hero .fact:nth-child(2){border-top:1px solid #cdbfc3}.hero-actions .action{width:100%}}
+
+</style></head><body><a class="skip" href="#work">Skip to projects</a>
 
 <header class="bar">
   <span class="mono">CV · 2026 · Warsaw / remote</span>
@@ -456,7 +467,7 @@ body.inspect{cursor:crosshair}
   <section class="section hero" id="about" data-spec="Frame · Hero">
     <div class="hero-meta mono">
       <span>tetiana-kozhushko.fig</span>
-      <span>Last edited Nov 2026</span>
+      <span>Warsaw · Open to remote</span>
     </div>
 
     <div class="hero-grid">
@@ -471,11 +482,8 @@ body.inspect{cursor:crosshair}
           <span class="sel" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="dim">B2B SaaS · Web · Mobile</span></span>
         </div>
 
-        <p class="lede" data-spec="Text · Body / Lede">
-          Hi, I'm Tetiana. I design products people understand without a tutorial, along with the flows, prototypes and components behind them.
-          At GRC Trail I was <strong>the only designer</strong>, so every screen of a compliance platform passed through my hands.
-          I also teach dance, so I <strong>designed and built a booking app for my own classes</strong>. It's live, and I keep shipping updates.
-        </p>
+        <p class="lede">I design web and mobile products, from user flows to the screens developers build. <strong>Sole designer at GRC Trail.</strong> Creator of a live booking app for my dance students.</p>
+        <div class="hero-actions"><a class="action primary" href="#work">Explore my work ↘</a><a class="action" href="/Tetiana-Kozhushko-CV.pdf" download>Download CV ↓</a></div>
 
         <div class="facts" data-spec="Auto layout · Facts → 4 cols">
           <div class="fact"><span class="k mono">Now</span><span class="fv">Junior+ UI/UX Designer at ACW Soft Solutions</span></div>
@@ -517,7 +525,7 @@ body.inspect{cursor:crosshair}
     <h2>things I've <em>made</em></h2>
 
     <div class="board">
-      <div class="print big" style="--r:-1.6deg;--tr:-4deg" data-spec="Component · Case card / Featured"><a class="print-link" href="https://www.behance.net/gallery/258265587/GRC-Trail-B2B-Compliance-SaaS-Product-Design" target="_blank" rel="noopener">
+      <div class="print big" style="--r:-1.6deg;--tr:-4deg" data-spec="Component · Case card / Featured"><a class="print-link" href="/work/grc-trail/">
         <span class="tape" aria-hidden="true"></span>
         <div class="photo"><img src="img/grc.jpg" alt="GRC Trail case cover" loading="lazy" width="808" height="632"><div class="cap mono"><span>01 · B2B SaaS</span><span>2025</span></div></div>
         <h3>GRC Trail</h3>
@@ -526,7 +534,7 @@ body.inspect{cursor:crosshair}
         <span class="open">Open case <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
       </a><button class="pin" type="button" aria-expanded="false" aria-controls="pin1" aria-label="Comment from Tetiana" style="--x:86%;--y:5%"><span>T</span></button><div class="pin-pop" id="pin1" style="--x:86%;--y:5%" hidden><b>Tetiana <small>comment</small></b>The real product holds real clients' data, so the case shows a demo company instead.</div></div>
 
-      <div class="print big" style="--r:1.8deg;--tr:3deg" data-spec="Component · Case card / Featured"><a class="print-link" href="https://www.behance.net/gallery/258265475/Tati-Heels-Dance-Booking-Telegram-Mini-App-UXUI" target="_blank" rel="noopener">
+      <div class="print big" style="--r:1.8deg;--tr:3deg" data-spec="Component · Case card / Featured"><a class="print-link" href="/work/tati-heels/">
         <span class="tape" aria-hidden="true"></span>
         <div class="photo"><img src="img/heels.jpg" alt="Tati Heels case cover" loading="lazy" width="808" height="632"><div class="cap mono"><span>02 · Telegram Mini App</span><span>Live</span></div></div>
         <h3>Tati Heels</h3>
@@ -535,7 +543,7 @@ body.inspect{cursor:crosshair}
         <span class="open">Open case <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
       </a><button class="pin" type="button" aria-expanded="false" aria-controls="pin2" aria-label="Comment from Tetiana" style="--x:86%;--y:5%"><span>T</span></button><div class="pin-pop" id="pin2" style="--x:86%;--y:5%" hidden><b>Tetiana <small>comment</small></b>It's live, and you can try it. <a href="https://t.me/tatiheels_booking_bot" target="_blank" rel="noopener">Open in Telegram&nbsp;<svg class="arr" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></div></div>
 
-      <div class="print" style="--r:-2.2deg;--tr:-2deg" data-spec="Component · Case card"><a class="print-link" href="https://www.behance.net/gallery/258265465/What-About-Tours-Travel-Platform-UXUI-Case-Study" target="_blank" rel="noopener">
+      <div class="print" style="--r:-2.2deg;--tr:-2deg" data-spec="Component · Case card"><a class="print-link" href="/work/whatabouttours/">
         <span class="tape" aria-hidden="true"></span>
         <div class="photo"><img src="img/wat.jpg" alt="What About Tours case cover" loading="lazy" width="808" height="632"><div class="cap mono"><span>03 · Client project</span><span>Web</span></div></div>
         <h3>What About Tours</h3>
@@ -543,19 +551,19 @@ body.inspect{cursor:crosshair}
         <span class="open">Open case <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
       </a><button class="pin" type="button" aria-expanded="false" aria-controls="pin3" aria-label="Comment from Tetiana" style="--x:84%;--y:6%"><span>T</span></button><div class="pin-pop" id="pin3" style="--x:84%;--y:6%" hidden><b>Tetiana <small>comment</small></b>Team project. I only show the screens I designed myself.</div></div>
 
-      <div class="print" style="--r:1.4deg;--tr:4deg" data-spec="Component · Case card"><a class="print-link" href="https://www.behance.net/gallery/258265257/Kyiv-Events-Event-Discovery-Publishing-UXUI" target="_blank" rel="noopener">
+      <div class="print" style="--r:1.4deg;--tr:4deg" data-spec="Component · Case card"><a class="print-link" href="/work/kyiv-events/">
         <span class="tape" aria-hidden="true"></span>
-        <div class="photo"><img src="img/kyiv.jpg" alt="Kyiv Events case cover" loading="lazy" width="808" height="632"><div class="cap mono"><span>04 · Website</span><span>Desktop</span></div></div>
+        <div class="photo"><img src="img/kyiv.jpg" alt="Kyiv Events case cover" loading="lazy" width="808" height="632"><div class="cap mono"><span>04 · Internship concept</span><span>Desktop</span></div></div>
         <h3>Kyiv Events</h3>
-        <p>A site for finding something to do in Kyiv tonight. Small organizers post their own events without asking anyone, and one design system serves both sides.</p>
+        <p>An independent desktop concept developed during my internship, for finding local events in Kyiv. Small organizers post their own events without asking anyone, and one design system serves both sides.</p>
         <span class="open">Open case <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
       </a></div>
 
-      <div class="print" style="--r:-1deg;--tr:-5deg" data-spec="Component · Case card"><a class="print-link" href="https://www.behance.net/gallery/258264949/LumiBook-Beauty-Booking-App-UXUI-Case-Study" target="_blank" rel="noopener">
+      <div class="print" style="--r:-1deg;--tr:-5deg" data-spec="Component · Case card"><a class="print-link" href="/work/lumibook/">
         <span class="tape" aria-hidden="true"></span>
-        <div class="photo"><img src="img/lumi.jpg" alt="LumiBook case cover" loading="lazy" width="808" height="632"><div class="cap mono"><span>05 · iOS app</span><span>Mobile</span></div></div>
+        <div class="photo"><img src="img/lumi.jpg" alt="LumiBook case cover" loading="lazy" width="808" height="632"><div class="cap mono"><span>05 · Internship concept</span><span>Mobile</span></div></div>
         <h3>LumiBook</h3>
-        <p>Booking a salon visit in a few taps. I kept the interface quiet and warm, so the photos and prices do the selling.</p>
+        <p>An independent mobile booking concept developed during my internship. I kept the interface quiet and warm, so the photos and prices do the selling.</p>
         <span class="open">Open case <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
       </a></div>
     </div>
@@ -787,3 +795,5 @@ body.inspect{cursor:crosshair}
   addEventListener('scroll',()=>on&&draw(),{passive:true});addEventListener('resize',()=>on&&draw());
 })();
 </script>
+
+</body></html>
