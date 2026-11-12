@@ -34,16 +34,18 @@ img{max-width:100%;display:block}
 [hidden]{display:none!important}
 
 /* ───────── wallpaper ───────── */
-.wall{position:fixed;inset:0;z-index:0;transition:background 1.2s var(--ease)}
-.wall[data-w="rose"]{background:
+.wall{position:fixed;inset:0;z-index:0;background:var(--wp)}
+/* the page itself carries the wallpaper too: Safari paints the page background (not fixed layers) under its floating bottom bar */
+html{background:var(--wp, var(--milk));background-size:100% 100lvh;background-repeat:no-repeat}
+html:has(#wall[data-w="rose"]){--wp:
   radial-gradient(60% 55% at 18% 22%, #F3D4DA 0%, transparent 60%),
   radial-gradient(55% 60% at 85% 30%, #DCD6F0 0%, transparent 62%),
   radial-gradient(70% 60% at 55% 95%, #E9B9C4 0%, transparent 60%), #F4E8EA}
-.wall[data-w="dusk"]{background:
+html:has(#wall[data-w="dusk"]){--wp:
   radial-gradient(60% 55% at 20% 25%, #C9A6C2 0%, transparent 60%),
   radial-gradient(55% 60% at 85% 30%, #8E86B8 0%, transparent 62%),
   radial-gradient(70% 60% at 55% 95%, #D88EA3 0%, transparent 60%), #B9A6BE}
-.wall[data-w="milk"]{background:
+html:has(#wall[data-w="milk"]){--wp:
   radial-gradient(60% 55% at 25% 20%, #FFFFFF 0%, transparent 60%),
   radial-gradient(60% 60% at 80% 85%, #EADDE0 0%, transparent 60%), #F3EEEC}
 .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.09;transform:translateZ(0);
@@ -474,15 +476,15 @@ html[data-theme="dark"]{color-scheme:dark;
   --shadow-win:0 30px 70px -20px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.08);
   --on-ink:#141116; --surface:#2A242C; --surface-2:#1C181E}
 /* dark versions of the three wallpapers, so "Change wallpaper" works at night too */
-html[data-theme="dark"] .wall[data-w="rose"]{background:
+html[data-theme="dark"]:has(#wall[data-w="rose"]){--wp:
   radial-gradient(60% 55% at 18% 22%, #3A2433 0%, transparent 60%),
   radial-gradient(55% 60% at 85% 30%, #262447 0%, transparent 62%),
   radial-gradient(70% 60% at 55% 95%, #43263A 0%, transparent 60%), #151218}
-html[data-theme="dark"] .wall[data-w="dusk"]{background:
+html[data-theme="dark"]:has(#wall[data-w="dusk"]){--wp:
   radial-gradient(60% 55% at 20% 25%, #4A3570 0%, transparent 60%),
   radial-gradient(55% 60% at 85% 30%, #24407A 0%, transparent 62%),
   radial-gradient(70% 60% at 55% 95%, #6E2F5C 0%, transparent 60%), #171631}
-html[data-theme="dark"] .wall[data-w="milk"]{background:
+html[data-theme="dark"]:has(#wall[data-w="milk"]){--wp:
   radial-gradient(60% 55% at 25% 20%, #4A4446 0%, transparent 60%),
   radial-gradient(60% 60% at 80% 85%, #3A3034 0%, transparent 60%), #232022}
 html[data-theme="dark"] .grain{opacity:.06}
