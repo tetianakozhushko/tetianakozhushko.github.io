@@ -7,7 +7,7 @@
 <meta name="description" content="Tetiana Kozhushko, UI/UX & Product Designer in Warsaw. Portfolio built as a little operating system.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap">
 <script>try{var t=localStorage.getItem('tos-theme');if(t==='dark')document.documentElement.dataset.theme='dark';}catch(e){}</script>
 <style>
 /* Studio OS: rose-aura desktop, objects as sections, windows as UI, Figma canvas inside cases */
@@ -16,7 +16,7 @@
   --ink:#1E1A1F; --ink-soft:#5E5560; --line:rgba(30,26,31,.12);
   --glass:rgba(255,255,255,.62); --paper:#FFFFFF; --canvas:#F1EEF0;
   --sel:#3B5BFF; --hot:#E0567E; --ok:#2BB673;
-  --f-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-display:"Archivo", "Roboto Flex", "Helvetica Neue", Arial, sans-serif;
   --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
   --f-hand:"Caveat", "Comic Sans MS", cursive;
   --r-win:14px; --shadow-win:0 30px 70px -20px rgba(60,30,45,.45), 0 0 0 1px rgba(30,26,31,.08);
@@ -24,6 +24,7 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
+html{background:var(--milk)}
 body{font:15px/1.55 var(--f-display);color:var(--ink);background:var(--milk);overflow:hidden;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit}
 a{color:inherit}
@@ -441,6 +442,10 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
   .fig{grid-template-columns:1fr}
   .fig-side,.fig-props{display:none}
   .fig-canvas{padding:16px}
+  /* sheets run under Safari's floating toolbar; content scrolls clear of it */
+  .win:not(.mini){top:56px!important;bottom:auto!important;height:max(calc(100% - 56px), calc(100lvh - 56px))!important}
+  .fig-canvas,.trashw{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  .wbody:not(:has(.fig,.trashw,.pdfv))::after{content:"";display:block;height:calc(84px + env(safe-area-inset-bottom))}
   .shot-head{grid-template-columns:1fr;gap:6px;padding:16px}
   .shot-head b{font-size:20px}
   .trashw{padding:16px}
@@ -452,6 +457,7 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
 
 /* ───────── dark theme: same tokens, night values. Paper objects on the desk stay paper. ───────── */
 .mb.thm{width:34px;padding:0;justify-content:center}
+.mb.lng{min-width:34px;padding:0 8px;justify-content:center;font:600 11px var(--f-mono);letter-spacing:.06em}
 .mb.thm svg{width:16px;height:16px}
 .mb.thm .sun{display:none}
 html[data-theme="dark"] .mb.thm .sun{display:block}
@@ -578,7 +584,7 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
   .proto-phone{height:min(70vh,640px);border-radius:36px;padding:7px}
   .proto-scr{border-radius:30px}
 }
-@media (max-width:380px){.mb.np .np-t{max-width:52px}.menubar{gap:6px}.tldr{grid-template-columns:1fr!important}}
+@media (max-width:380px){.mb.np .np-t{display:none}.menubar{gap:6px}.tldr{grid-template-columns:1fr!important}}
 @keyframes sheetIn{from{transform:translateY(100%)}}
 @keyframes sheetOut{to{transform:translateY(100%)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -591,7 +597,7 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
 <!-- LOCK SCREEN -->
 <section class="lock" id="lock" aria-label="Welcome screen">
   <div class="lock-top">
-    <div class="lock-date" id="lockDate">Warsaw</div>
+    <div class="lock-date" id="lockDate" translate="no">Warsaw</div>
     <div class="lock-time" id="lockTime" aria-live="off">--:--</div>
   </div>
   <div class="lock-mid">
@@ -626,8 +632,9 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
   <button class="mb grav" id="gravBtn" aria-pressed="false">Gravity <span class="tg"></span></button>
   <button class="mb grav" id="inspBtn" aria-pressed="false" title="Dev Mode · Shift+D">Inspect <span class="tg"></span></button>
   <button class="mb grav kbd-hint" id="kbdBtn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts · ?">⌘K</button>
+  <button class="mb lng" id="langBtn" aria-label="Language" title="Language · L">EN</button>
   <button class="mb thm" id="themeBtn" aria-pressed="false" aria-label="Dark mode" title="Dark mode · T"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
-  <span class="mb clock" id="clock">--:--</span>
+  <span class="mb clock" id="clock" translate="no">--:--</span>
   <button class="mb cta" data-open="contact"><span class="lab">Hire me</span><span aria-hidden="true">↗︎</span></button>
 </header>
 
@@ -651,12 +658,48 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script src="i18n.js"></script>
 <script>
 (() => {
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const isPhone = () => matchMedia('(max-width:760px)').matches;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ───────── languages: English source text, Polish and Ukrainian from i18n.js ───────── */
+const LANGS=['en','pl','uk'], LCODE={en:'EN',pl:'PL',uk:'UA'}, LOC={en:'en-GB',pl:'pl-PL',uk:'uk-UA'};
+let lang=(()=>{ try{ const v=localStorage.getItem('tos-lang'); if (LANGS.includes(v)) return v; }catch(e){}
+  const n=(navigator.language||'en').slice(0,2).toLowerCase(); return n==='pl'?'pl':n==='uk'?'uk':'en'; })();
+const AFFIX=/^([\s·•]*)(.*?)([\s←-⇿︎️♪\u{1F300}-\u{1FAFF}]*)$/su;
+const keepWs=(o,t)=>o.match(/^\s*/)[0]+t+o.match(/\s*$/)[0];
+function T(en){
+  if (lang==='en' || !en) return en;
+  const D=window.I18N||{}, i=lang==='pl'?0:1, k=en.replace(/\s+/g,' ').trim();
+  if (!k) return en;
+  if (D[k]) return keepWs(en, D[k][i]);
+  const m=k.match(AFFIX); if (m && m[2] && D[m[2]]) return keepWs(en, m[1]+D[m[2]][i]+m[3]);
+  return en;
+}
+const SKIP='script,style,[translate="no"]', TA=['aria-label','title','data-tip','placeholder','alt'];
+function trText(n){ const p=n.parentElement; if (!p || p.closest(SKIP)) return;
+  const cur=n.nodeValue; if (n.__set!==cur) n.__en=cur; const t=T(n.__en); if (t!==cur) n.nodeValue=t; n.__set=n.nodeValue; }
+function trAttr(el,a){ if (!el.closest || el.closest(SKIP)) return; const cur=el.getAttribute(a); if (cur==null) return;
+  const r=(el.__a||(el.__a={}))[a]||(el.__a[a]={}); if (r.set!==cur) r.en=cur; const t=T(r.en); if (t!==cur) el.setAttribute(a,t); r.set=el.getAttribute(a); }
+function trTree(root){
+  if (root.nodeType===3) return trText(root); if (root.nodeType!==1) return;
+  const tw=document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n; while ((n=tw.nextNode())) trText(n);
+  [root, ...root.querySelectorAll('[aria-label],[title],[data-tip],[placeholder],[alt]')].forEach(el => TA.forEach(a => el.hasAttribute(a) && trAttr(el,a)));
+}
+new MutationObserver(ms => { for (const m of ms){
+  if (m.type==='characterData') trText(m.target); else if (m.type==='attributes') trAttr(m.target, m.attributeName); else m.addedNodes.forEach(trTree);
+} }).observe(document.body, { subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:TA });
+function setLang(l){
+  lang=l; document.documentElement.lang = l;
+  try{ localStorage.setItem('tos-lang', l); }catch(e){}
+  trTree(document.body); tick();
+  const b=$('#langBtn'); if (b) b.textContent=LCODE[l];
+}
+const nextLang = () => setLang(LANGS[(LANGS.indexOf(lang)+1)%LANGS.length]);
 
 /* ───────── data ───────── */
 const BE = 'https://www.behance.net/gallery/';
@@ -792,16 +835,16 @@ const CASES = {
       ['Status','A concept. It has yet to be tested with clients.']
     ],
     frames:[
-      { id:'brief', label:'The brief', img:'img/cases/lumi/01.webp', w:1400, h:4000, title:'Deciding what to book.', text:'The brief and the discovery flow.' },
-      { id:'persona', label:'Persona & journey', img:'img/cases/lumi/02.webp', w:1400, h:4000, title:'Sophia books between meetings.', text:'The proto-persona and journey map identify the decisions someone makes from discovering a service to choosing a specialist.',
-        pins:[ {x:69,y:29.4,t:'Proto-persona: 28, digital marketing manager in Warsaw. “I want to book quickly, on my own, without extra conversations.”'},
-               {x:57,y:50.4,t:'The journey map found the weak spot. Choosing a specialist was the one neutral moment, so the specialist profile got the most care.'},
-               {x:26.5,y:85.5,t:'From lilac to linen. The first concept was soft. The final one drops the colour, squares the corners and lets the photography carry the warmth.'} ] },
-      { id:'browse', label:'Browsing', img:'img/cases/lumi/04.webp', w:1400, h:4000, title:'Services and specialists.', text:'Service details, reviews, prices and availability support the same short booking flow.' },
-      { id:'flow', label:'Booking flow', img:'img/cases/lumi/05.webp', w:1400, h:4000, title:'Small decisions, clearly grouped.', text:'Each detail removes one reason to stop. Prices sit next to services, unavailable days fade out, and the running total never leaves the screen.',
-        pins:[ {x:8,y:88.6,t:'Unavailable days fade out, so the calendar only offers real choices.'},
-               {x:76,y:83.4,t:'Time slots grouped by morning and afternoon. Same shape, one filled state.'} ] },
-      { id:'system', label:'Visual system', img:'img/cases/lumi/06.webp', w:1400, h:4000, title:'Warm and quiet.', text:'I kept the palette warm and the layouts quiet so photos, prices and available times were easy to compare.' }
+      { id:'brief', label:'The brief', img:'img/cases/lumi/s-brief.webp', w:1400, h:3152, title:'Deciding what to book.', text:'The brief and the discovery flow.' },
+      { id:'persona', label:'Persona & journey', img:'img/cases/lumi/s-persona.webp', w:1400, h:4046, title:'Sophia books between meetings.', text:'The proto-persona and journey map identify the decisions someone makes from discovering a service to choosing a specialist.',
+        pins:[ {x:69,y:22.9,t:'Proto-persona: 28, digital marketing manager in Warsaw. “I want to book quickly, on my own, without extra conversations.”'},
+               {x:57,y:43.7,t:'The journey map found the weak spot. Choosing a specialist was the one neutral moment, so the specialist profile got the most care.'},
+               {x:26.5,y:78.4,t:'From lilac to linen. The first concept was soft. The final one drops the colour, squares the corners and lets the photography carry the warmth.'} ] },
+      { id:'browse', label:'Browsing', img:'img/cases/lumi/s-browse.webp', w:1400, h:4944, title:'Services and specialists.', text:'Service details, reviews, prices and availability support the same short booking flow.' },
+      { id:'flow', label:'Booking flow', img:'img/cases/lumi/s-flow.webp', w:1400, h:3402, title:'Small decisions, clearly grouped.', text:'Each detail removes one reason to stop. Prices sit next to services, unavailable days fade out, and the running total never leaves the screen.',
+        pins:[ {x:8,y:29.2,t:'Unavailable days fade out, so the calendar only offers real choices.'},
+               {x:76,y:23.1,t:'Time slots grouped by morning and afternoon. Same shape, one filled state.'} ] },
+      { id:'system', label:'Visual system', img:'img/cases/lumi/s-system.webp', w:1400, h:1596, title:'Warm and quiet.', text:'I kept the palette warm and the layouts quiet so photos, prices and available times were easy to compare.' }
     ] },
 };
 const TRACKS = [
@@ -815,10 +858,10 @@ const TRACKS = [
 const tz = 'Europe/Warsaw';
 function tick(){
   const d = new Date();
-  const hm = d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:tz});
+  const hm = d.toLocaleTimeString(LOC[lang],{hour:'2-digit',minute:'2-digit',timeZone:tz});
   $('#lockTime').textContent = hm;
-  $('#lockDate').textContent = d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',timeZone:tz}) + ' · Warsaw';
-  $('#clock').textContent = d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:tz}) + '  ' + hm;
+  $('#lockDate').textContent = d.toLocaleDateString(LOC[lang],{weekday:'long',day:'numeric',month:'long',timeZone:tz}) + ' · ' + T('Warsaw');
+  $('#clock').textContent = d.toLocaleDateString(LOC[lang],{weekday:'short',day:'numeric',month:'short',timeZone:tz}) + '  ' + hm;
 }
 tick(); setInterval(tick, 10000);
 
@@ -1077,6 +1120,17 @@ function caseWin(key){
       $$('[data-pin].open', w).forEach(x=>x.classList.remove('open')); pn.classList.toggle('open', open);
     }));
     canvas.addEventListener('click', () => $$('[data-pin].open', w).forEach(x=>x.classList.remove('open')));
+    // keep an open comment inside the canvas, never past the screen edge
+    const fitPin = pn => { const c=$('.pin-c', pn); if (!c) return; c.style.transform=''; c.style.width='';
+      {
+        const cr=canvas.getBoundingClientRect(), L=Math.max(cr.left,0)+8, Rt=Math.min(cr.right,innerWidth)-8;
+        if (c.offsetWidth > Rt-L) c.style.width=(Rt-L)+'px';
+        const r=c.getBoundingClientRect(); let dx=0;
+        if (r.left < L) dx = L-r.left; else if (r.right > Rt) dx = Rt-r.right;
+        if (dx) c.style.transform=`translateX(${Math.round(dx)}px)`;
+      } };
+    $$('[data-pin]', w).forEach(pn => { pn.addEventListener('click', () => fitPin(pn)); pn.addEventListener('mouseenter', () => fitPin(pn)); pn.addEventListener('focus', () => fitPin(pn)); });
+
     const tgl=$('.cmt-toggle', w);
     if (tgl) tgl.onclick = () => { const on = tgl.getAttribute('aria-pressed')!=='true'; tgl.setAttribute('aria-pressed', on); w.classList.toggle('no-pins', !on); };
   }};
@@ -1085,7 +1139,8 @@ function caseWin(key){
 
 /* trash: concepts that came before the final design, captions from the Behance cases */
 const TRASH = [
-  { case:'kyiv', title:'Kyiv Events', h:'Three concepts, one question.', tall:false, items:[
+  { case:'kyiv', title:'Kyiv Events', h:'Three concepts, one question.', tall:false,
+    lead:'Cut-out objects weren’t on the first board. They came out of the concepts and gave the product its face. Kept from the start: milk background, ink text, restrained accents, KyivType and real Kyiv photography.', items:[
     { img:'img/trash/kyiv-c1.webp', tag:'Concept 1', b:'«Події Києва в одному місці»', t:'It says what it is.' },
     { img:'img/trash/kyiv-c2.webp', tag:'Concept 2', b:'«Ці вихідні належать тобі»', t:'It talks to you.' },
     { img:'img/trash/kyiv-c3.webp', tag:'Concept 3', b:'«Ти як, виходиш?»', t:'It asks you out.' },
@@ -1423,6 +1478,9 @@ const ACTIONS = [
   { ic:'☾', t:'Toggle dark mode', k:'T', run:()=>setTheme(document.documentElement.dataset.theme!=='dark') },
   { ic:'▶', t:'Present the Tati Heels prototype', run:()=>present('heels') },
   { ic:'⌫', t:'Open Trash · discarded concepts', run:()=>openThing('trash') },
+  { ic:'EN', t:'English', run:()=>setLang('en') },
+  { ic:'PL', t:'Polski', run:()=>setLang('pl') },
+  { ic:'UA', t:'Українська', run:()=>setLang('uk') },
   { ic:'⌘', t:'Keyboard shortcuts', k:'?', run:()=>showKeys() }
 ];
 let veil=null;
@@ -1450,6 +1508,7 @@ function showKeys(){
     <dt><kbd>C</kbd></dt><dd>Show or hide comments in a case</dd>
     <dt><kbd>G</kbd></dt><dd>Gravity</dd>
     <dt><kbd>T</kbd></dt><dd>Light or dark theme</dd>
+    <dt><kbd>L</kbd></dt><dd>Switch language</dd>
     <dt><kbd>Esc</kbd></dt><dd>Close the top window</dd>
     <dt><kbd>?</kbd></dt><dd>This list</dd></dl><p>On a Windows keyboard, use Ctrl instead of ⌘.</p></div>`;
   document.body.appendChild(veil); veil.onclick=()=>closeVeil();
@@ -1464,6 +1523,7 @@ function setTheme(dark, animate=true){
 }
 setTheme(document.documentElement.dataset.theme==='dark', false);
 $('#themeBtn').onclick = () => setTheme(document.documentElement.dataset.theme!=='dark');
+$('#langBtn').onclick = nextLang;
 addEventListener('keydown', e => {
   const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'') && document.activeElement.type!=='range';
   if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); unlock(); veil?closeVeil():openPalette(); return; }
@@ -1474,6 +1534,7 @@ addEventListener('keydown', e => {
   if (e.key==='v' || e.key==='V'){ if (inspectOn) setInspect(false); closeVeil(); return; }
   if (e.key==='g' || e.key==='G'){ setGravity(!gravityOn); return; }
   if (e.key==='t' || e.key==='T'){ setTheme(document.documentElement.dataset.theme!=='dark'); return; }
+  if (e.key==='l' || e.key==='L'){ nextLang(); return; }
   if (e.key==='c' || e.key==='C'){ const top=Object.values(wins).sort((a,b)=>b.style.zIndex-a.style.zIndex)[0]; const t=top&&$('.cmt-toggle',top); if(t) t.click(); return; }
 }, true);
 
@@ -1487,7 +1548,7 @@ if (matchMedia('(pointer:fine)').matches){
   const you=$('.you',uc);
   const HINTS=[
     ['.pin','read my note'],['.icon','double-click to open'],['.sticky','drag me'],['.titlebar','drag the window'],
-    ['.track','play'],['#pp','play / pause'],['#volR','volume'],['#mute','sound on / off'],['.layer','jump to frame'],['.knob','slide'],['#gravBtn','gravity!'],['#themeBtn','lights off / on'],
+    ['.track','play'],['#pp','play / pause'],['#volR','volume'],['#mute','sound on / off'],['.layer','jump to frame'],['.knob','slide'],['#gravBtn','gravity!'],['#themeBtn','lights off / on'],['#langBtn','switch language'],
     ['#inspBtn','Dev Mode'],['.f, a.btn, a[href]','open'],['button','click']
   ];
   let lastHint='';
@@ -1523,6 +1584,7 @@ desk.addEventListener('contextmenu', e => {
 });
 function closeCtx(){ ctx && ctx.remove(); ctx=null; }
 addEventListener('pointerdown', e => { if (ctx && !ctx.contains(e.target)) closeCtx(); });
+setLang(lang);
 })();
 </script>
 </body>
