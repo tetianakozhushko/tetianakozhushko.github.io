@@ -25,7 +25,8 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 html{background:var(--milk)}
-:root{--bar-top:max(8px, env(safe-area-inset-top))}
+:root{--bar-top:max(8px, env(safe-area-inset-top));--run:0px}
+@media (max-width:760px){:root{--run:90px}}
 body{font:15px/1.55 var(--f-display);color:var(--ink);background:transparent;overflow:hidden;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit}
 a{color:inherit}
@@ -34,7 +35,7 @@ img{max-width:100%;display:block}
 [hidden]{display:none!important}
 
 /* ───────── wallpaper ───────── */
-.wall{position:fixed;inset:0;z-index:0;background:var(--wp)}
+.wall{position:fixed;inset:0;z-index:0}
 /* the page itself carries the wallpaper too: Safari paints the page background (not fixed layers) under its floating bottom bar */
 html{background:var(--wp, var(--milk));background-size:100% 100lvh;background-repeat:no-repeat}
 html:has(#wall[data-w="rose"]){--wp:
@@ -54,11 +55,11 @@ html:has(#wall[data-w="milk"]){--wp:
 /* ───────── lock screen ───────── */
 .lock{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
   padding:max(28px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));text-align:center;
-  background:radial-gradient(60% 55% at 18% 22%, #F3D4DA 0%, transparent 60%),radial-gradient(55% 60% at 85% 30%, #DCD6F0 0%, transparent 62%),radial-gradient(70% 60% at 55% 95%, #E9B9C4 0%, transparent 60%), #F4E8EA;transition:transform .9s var(--ease), opacity .6s ease .2s}
+  transition:transform .9s var(--ease), opacity .6s ease .2s}
 .lock::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(26px) saturate(1.2);-webkit-backdrop-filter:blur(26px) saturate(1.2);background:rgba(255,255,255,.18)}
 .lock.gone{transform:translateY(-100%);opacity:0;pointer-events:none}
 /* desktop icons stay hidden behind the lock screen (Safari otherwise shows them under its bottom bar) */
-body:has(#lock:not(.gone)) .desk{visibility:hidden}
+body:has(#lock:not(.gone)) :is(.desk,.menubar,.dock,.win){visibility:hidden}
 /* backgrounds run under Safari's floating bottom bar (large viewport), so the bar sits on the wallpaper, not on a grey strip */
 .wall,.grain,.lock{bottom:auto;height:max(100%, 100lvh)}
 .lock{padding-bottom:calc(max(28px, env(safe-area-inset-bottom)) + max(0px, 100lvh - 100svh))}
@@ -99,9 +100,9 @@ body:has(#lock:not(.gone)) .desk{visibility:hidden}
 .skip:hover{color:var(--ink)}
 
 /* ───────── menu bar ───────── */
-.menubar{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;gap:6px;
+.menubar{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;gap:6px;pointer-events:none;
   padding:max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) 8px max(10px, env(safe-area-inset-left))}
-.mb{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border-radius:10px;border:0;cursor:pointer;
+.mb{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border-radius:10px;border:0;cursor:pointer;
   background:var(--glass);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.55), 0 2px 10px -6px rgba(60,30,45,.3);font:500 13px var(--f-display);white-space:nowrap}
 .mb:hover{background:rgba(255,255,255,.8)}
@@ -126,8 +127,9 @@ body:has(#lock:not(.gone)) .desk{visibility:hidden}
 /* ───────── desktop ───────── */
 .desk{position:fixed;inset:0;z-index:2}
 /* soft dim behind open windows; clicks still reach the desktop */
-.dim{position:fixed;inset:0;bottom:auto;height:max(100%, 100lvh);z-index:9;pointer-events:none;background:rgba(30,26,31,.16);opacity:0;transition:opacity .35s var(--ease)}
-.dim.on{opacity:1}
+.dim{position:fixed;inset:0;bottom:auto;height:max(100%, 100lvh);z-index:9;pointer-events:none;background:rgba(30,26,31,.16);display:none}
+.dim.on{display:block;animation:dimIn .35s var(--ease)}
+@keyframes dimIn{from{opacity:0}}
 .icon{position:absolute;display:grid;justify-items:center;gap:6px;width:132px;padding:6px;border:0;background:none;cursor:pointer;
   border-radius:12px;user-select:none;-webkit-user-select:none;touch-action:none;transition:transform .3s var(--ease);will-change:transform;transform:translateZ(0);backface-visibility:hidden}
 .icon:hover .obj{transform:translateY(-4px) rotate(var(--tilt,0deg))}
@@ -439,6 +441,11 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
 @media (max-width:760px){
   /* the page itself never scrolls on phones: only the desktop layer does, so Safari's bar always sits on the page-background wallpaper */
   body{overflow:hidden}
+  html{height:calc(100% + var(--run));background-size:100% calc(100lvh + var(--run))}
+  html,body{overscroll-behavior:none}
+  html{scrollbar-width:none}
+  html::-webkit-scrollbar{display:none}
+  .dim{display:none!important}
   .menus,.mb.grav,.mb.clock{display:none}
   .sticky small .d{display:none}
   .sticky small .m{display:inline!important}
@@ -493,7 +500,6 @@ html[data-theme="dark"]:has(#wall[data-w="milk"]){--wp:
   radial-gradient(60% 55% at 25% 20%, #4A4446 0%, transparent 60%),
   radial-gradient(60% 60% at 80% 85%, #3A3034 0%, transparent 60%), #232022}
 html[data-theme="dark"] .grain{opacity:.06}
-html[data-theme="dark"] .lock{background:radial-gradient(60% 55% at 18% 22%, #3A2433 0%, transparent 60%),radial-gradient(55% 60% at 85% 30%, #262447 0%, transparent 62%),radial-gradient(70% 60% at 55% 95%, #43263A 0%, transparent 60%), #151218}
 html[data-theme="dark"] .lock::before{background:rgba(0,0,0,.12)}
 html[data-theme="dark"] .notif{background:rgba(42,36,44,.6)}
 html[data-theme="dark"] .slider{background:rgba(42,36,44,.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
@@ -1099,6 +1105,10 @@ function syncMiniPad(){ cancelAnimationFrame(miniRaf); miniRaf=requestAnimationF
   document.documentElement.style.setProperty('--mini-h', m ? m.offsetHeight+'px' : '0px');
   dimEl.classList.toggle('on', !!document.querySelector('.win:not(.mini):not(.closing)'));
 }); }
+// phones: start the page scrolled down by the runway, so Safari shows the wallpaper behind its status bar
+const toRunway = () => { if (!isPhone()) return; const run=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--run'))||0; if (Math.abs(scrollY-run)>1) scrollTo(0, run); };
+toRunway(); addEventListener('load', toRunway); addEventListener('resize', toRunway); addEventListener('pageshow', toRunway);
+addEventListener('scroll', () => { if (isPhone() && scrollY < 1) requestAnimationFrame(toRunway); }, {passive:true});
 const dimEl=document.createElement('div'); dimEl.className='dim'; dimEl.setAttribute('aria-hidden','true'); document.body.appendChild(dimEl);
 new MutationObserver(syncMiniPad).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 addEventListener('resize', syncMiniPad);
