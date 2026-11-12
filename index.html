@@ -470,10 +470,18 @@ html[data-theme="dark"]{color-scheme:dark;
   --glass:rgba(42,36,44,.62); --paper:#221D24; --canvas:#161318;
   --shadow-win:0 30px 70px -20px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.08);
   --on-ink:#141116; --surface:#2A242C; --surface-2:#1C181E}
-html[data-theme="dark"] .wall[data-w]{background:
+/* dark versions of the three wallpapers, so "Change wallpaper" works at night too */
+html[data-theme="dark"] .wall[data-w="rose"]{background:
   radial-gradient(60% 55% at 18% 22%, #3A2433 0%, transparent 60%),
   radial-gradient(55% 60% at 85% 30%, #262447 0%, transparent 62%),
   radial-gradient(70% 60% at 55% 95%, #43263A 0%, transparent 60%), #151218}
+html[data-theme="dark"] .wall[data-w="dusk"]{background:
+  radial-gradient(60% 55% at 20% 25%, #4A3570 0%, transparent 60%),
+  radial-gradient(55% 60% at 85% 30%, #24407A 0%, transparent 62%),
+  radial-gradient(70% 60% at 55% 95%, #6E2F5C 0%, transparent 60%), #171631}
+html[data-theme="dark"] .wall[data-w="milk"]{background:
+  radial-gradient(60% 55% at 25% 20%, #4A4446 0%, transparent 60%),
+  radial-gradient(60% 60% at 80% 85%, #3A3034 0%, transparent 60%), #232022}
 html[data-theme="dark"] .grain{opacity:.06}
 html[data-theme="dark"] .lock{background:radial-gradient(60% 55% at 18% 22%, #3A2433 0%, transparent 60%),radial-gradient(55% 60% at 85% 30%, #262447 0%, transparent 62%),radial-gradient(70% 60% at 55% 95%, #43263A 0%, transparent 60%), #151218}
 html[data-theme="dark"] .lock::before{background:rgba(0,0,0,.12)}
