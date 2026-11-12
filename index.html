@@ -119,6 +119,9 @@ img{max-width:100%;display:block}
 
 /* ───────── desktop ───────── */
 .desk{position:fixed;inset:0;z-index:2}
+/* soft dim behind open windows; clicks still reach the desktop */
+.dim{position:fixed;inset:0;bottom:auto;height:max(100%, 100lvh);z-index:9;pointer-events:none;background:rgba(30,26,31,.16);opacity:0;transition:opacity .35s var(--ease)}
+.dim.on{opacity:1}
 .icon{position:absolute;display:grid;justify-items:center;gap:6px;width:132px;padding:6px;border:0;background:none;cursor:pointer;
   border-radius:12px;user-select:none;-webkit-user-select:none;touch-action:none;transition:transform .3s var(--ease);will-change:transform;transform:translateZ(0);backface-visibility:hidden}
 .icon:hover .obj{transform:translateY(-4px) rotate(var(--tilt,0deg))}
@@ -441,7 +444,7 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
   .win{inset:auto 0 0 0!important;width:100%!important;height:calc(100% - 56px)!important;max-height:none;max-width:none;border-radius:18px 18px 0 0}
   .win.opening{animation:sheetIn .45s var(--ease) both}
   .win.closing{animation:sheetOut .3s ease-in both}
-  .win.mini{height:auto!important;width:100%!important;left:0!important;right:0;bottom:0;border-radius:16px 16px 0 0}
+  .win.mini{height:auto!important;width:100%!important;left:0!important;right:0;bottom:0;border-radius:16px 16px 0 0;padding-bottom:max(8px, env(safe-area-inset-bottom))}
   .titlebar{cursor:default}
   .fig{grid-template-columns:1fr}
   .fig-side,.fig-props{display:none}
@@ -449,7 +452,7 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
   /* sheets run under Safari's floating toolbar; content scrolls clear of it */
   .win:not(.mini){top:calc(var(--bar-top) + 58px)!important;bottom:auto!important;height:max(calc(100% - var(--bar-top) - 58px), calc(100lvh - var(--bar-top) - 58px))!important}
   .fig-canvas,.trashw{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
-  .wbody:not(:has(.fig,.trashw,.pdfv))::after{content:"";display:block;height:calc(84px + env(safe-area-inset-bottom))}
+  .win:not(.mini) .wbody:not(:has(.fig,.trashw,.pdfv))::after{content:"";display:block;height:calc(84px + env(safe-area-inset-bottom))}
   .shot-head{grid-template-columns:1fr;gap:6px;padding:16px}
   .shot-head b{font-size:20px}
   .trashw{padding:16px}
@@ -526,6 +529,7 @@ html[data-theme="dark"] .toast{background:var(--ink);color:var(--on-ink)}
 html[data-theme="dark"] .dock{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 10px 30px -14px rgba(0,0,0,.6)}
 html[data-theme="dark"] .dock button::after{color:var(--on-ink)}
 html[data-theme="dark"] .veil{background:rgba(0,0,0,.4)}
+html[data-theme="dark"] .dim{background:rgba(0,0,0,.34)}
 html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
 
 /* ───────── trash: rejected concepts ───────── */
@@ -1086,7 +1090,9 @@ let miniRaf=0;
 function syncMiniPad(){ cancelAnimationFrame(miniRaf); miniRaf=requestAnimationFrame(()=>{
   const m=document.querySelector('.win.mini:not(.closing)');
   document.documentElement.style.setProperty('--mini-h', m ? m.offsetHeight+'px' : '0px');
+  dimEl.classList.toggle('on', !!document.querySelector('.win:not(.mini):not(.closing)'));
 }); }
+const dimEl=document.createElement('div'); dimEl.className='dim'; dimEl.setAttribute('aria-hidden','true'); document.body.appendChild(dimEl);
 new MutationObserver(syncMiniPad).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 addEventListener('resize', syncMiniPad);
 function setMini(w, on){
