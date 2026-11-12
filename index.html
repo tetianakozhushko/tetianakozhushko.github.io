@@ -433,12 +433,13 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
 
 /* ───────── phone: home screen ───────── */
 @media (max-width:760px){
-  body{overflow:auto}
+  /* the page itself never scrolls on phones: only the desktop layer does, so Safari's bar always sits on the page-background wallpaper */
+  body{overflow:hidden}
   .menus,.mb.grav,.mb.clock{display:none}
   .sticky small .d{display:none}
   .sticky small .m{display:inline!important}
   .mb.np .np-t{max-width:90px}
-  .desk{position:relative;min-height:100%;padding:calc(var(--bar-top) + 74px) max(16px, env(safe-area-inset-right)) calc(120px + var(--mini-h,0px)) max(16px, env(safe-area-inset-left));
+  .desk{position:fixed;inset:0;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding:calc(var(--bar-top) + 74px) max(16px, env(safe-area-inset-right)) calc(120px + var(--mini-h,0px)) max(16px, env(safe-area-inset-left));
     display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 8px;align-content:start}
   .icon{position:static;width:auto;transform:none!important;align-content:start}
   .icon .obj{transform:scale(.78) rotate(var(--tilt,0deg))}
@@ -1094,8 +1095,6 @@ function syncMiniPad(){ cancelAnimationFrame(miniRaf); miniRaf=requestAnimationF
   document.documentElement.style.setProperty('--mini-h', m ? m.offsetHeight+'px' : '0px');
   dimEl.classList.toggle('on', !!document.querySelector('.win:not(.mini):not(.closing)'));
 }); }
-// iOS ignores background-attachment:fixed, so keep the page-background wallpaper pinned to the screen while the phone desktop scrolls
-addEventListener('scroll', () => { document.documentElement.style.backgroundPosition = scrollY > 0 ? `0 ${Math.round(scrollY)}px` : ''; }, {passive:true});
 const dimEl=document.createElement('div'); dimEl.className='dim'; dimEl.setAttribute('aria-hidden','true'); document.body.appendChild(dimEl);
 new MutationObserver(syncMiniPad).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 addEventListener('resize', syncMiniPad);
