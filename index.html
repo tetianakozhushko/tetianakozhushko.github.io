@@ -739,7 +739,8 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ───────── languages: English source text, Polish and Ukrainian from i18n.js ───────── */
 const LANGS=['en','pl','uk'], LCODE={en:'EN',pl:'PL',uk:'UA'}, LOC={en:'en-GB',pl:'pl-PL',uk:'uk-UA'};
-let lang=(()=>{ try{ const v=localStorage.getItem('tos-lang-choice'); if (LANGS.includes(v)) return v; }catch(e){} return 'en'; })();
+// every new visit opens in English; a language picked in Settings lasts only for this tab's session
+let lang=(()=>{ try{ localStorage.removeItem('tos-lang-choice'); localStorage.removeItem('tos-lang'); const v=sessionStorage.getItem('tos-lang-choice'); if (LANGS.includes(v)) return v; }catch(e){} return 'en'; })();
 const AFFIX=/^([\s·•]*)(.*?)([\s←-⇿︎️♪\u{1F300}-\u{1FAFF}]*)$/su;
 const keepWs=(o,t)=>o.match(/^\s*/)[0]+t+o.match(/\s*$/)[0];
 function T(en){
@@ -765,7 +766,7 @@ new MutationObserver(ms => { for (const m of ms){
 } }).observe(document.body, { subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:TA });
 function setLang(l, chosen){
   lang=l; document.documentElement.lang = l;
-  if (chosen) try{ localStorage.setItem('tos-lang-choice', l); }catch(e){}
+  if (chosen) try{ sessionStorage.setItem('tos-lang-choice', l); }catch(e){}
   trTree(document.body); tick();
   $$('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang===l));
 }
