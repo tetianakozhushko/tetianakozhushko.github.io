@@ -1094,6 +1094,8 @@ function syncMiniPad(){ cancelAnimationFrame(miniRaf); miniRaf=requestAnimationF
   document.documentElement.style.setProperty('--mini-h', m ? m.offsetHeight+'px' : '0px');
   dimEl.classList.toggle('on', !!document.querySelector('.win:not(.mini):not(.closing)'));
 }); }
+// iOS ignores background-attachment:fixed, so keep the page-background wallpaper pinned to the screen while the phone desktop scrolls
+addEventListener('scroll', () => { document.documentElement.style.backgroundPosition = scrollY > 0 ? `0 ${Math.round(scrollY)}px` : ''; }, {passive:true});
 const dimEl=document.createElement('div'); dimEl.className='dim'; dimEl.setAttribute('aria-hidden','true'); document.body.appendChild(dimEl);
 new MutationObserver(syncMiniPad).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 addEventListener('resize', syncMiniPad);
