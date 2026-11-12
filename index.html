@@ -235,7 +235,8 @@ body:has(#lock:not(.gone)) :is(.desk,.menubar,.dock,.win){visibility:hidden}
 .btn:hover{transform:translateY(-2px)}
 .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px rgba(30,26,31,.25)}
 .fig-props{border-left:1px solid var(--line);padding:12px;display:grid;gap:16px;align-content:start;font-size:12px;overflow:auto}
-.prop{display:grid;grid-template-columns:70px 1fr;gap:4px 8px}
+.prop{display:grid;grid-template-columns:minmax(70px,max-content) minmax(0,1fr);gap:4px 10px}
+.prop > *{min-width:0;overflow-wrap:anywhere}
 .prop span{color:var(--ink-soft)}
 .inspect-note{font:600 16px/1.2 var(--f-hand);color:var(--hot)}
 
@@ -1056,7 +1057,10 @@ desk.addEventListener('pointerdown', e => { if (e.target===desk) $$('.icon.selec
 
 /* ───────── windows ───────── */
 let z = 20; const wins = {};
-function focusWin(w){ Object.values(wins).forEach(x=>x.classList.add('inactive')); w.classList.remove('inactive'); w.style.zIndex=++z; syncDock(); }
+function focusWin(w){ Object.values(wins).forEach(x=>x.classList.add('inactive')); w.classList.remove('inactive'); w.style.zIndex=++z;
+  // keep windows in the 20–39 band, so the dock, menu bar, Settings, palette and toasts always stay on top
+  if (z > 38) { z = 19; Object.values(wins).sort((a,b)=>a.style.zIndex-b.style.zIndex).forEach(x => x.style.zIndex = ++z); }
+  syncDock(); }
 function syncDock(){ $$('.dock [data-open]').forEach(b => b.classList.toggle('open', !!wins[b.dataset.open] || (b.dataset.open==='grc' && Object.keys(CASES).some(k=>wins[k])))); }
 
 function openThing(key, from){
