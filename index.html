@@ -605,15 +605,15 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
 .proto-phone{position:relative;height:min(84vh,860px);aspect-ratio:414/939;border-radius:58px;background:#0c0a0d;box-shadow:0 0 0 1.5px #3a333c,inset 0 0 0 1px #000,0 40px 80px -30px rgba(0,0,0,.8)}
 .proto-scr{position:absolute;inset:12px;border-radius:47px;overflow:hidden;background:#212022;isolation:isolate}
 .pdev{position:absolute;left:0;top:0;width:390px;height:915px;transform-origin:0 0}
-.psb{position:absolute;left:0;top:0;width:390px;height:47px;background:var(--pbar);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 44px;font:600 16px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text",var(--f-display);letter-spacing:-.01em}
+.psb{position:absolute;left:0;top:0;z-index:2;width:390px;height:48px;background:var(--pbar);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 44px;font:600 16px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text",var(--f-display);letter-spacing:-.01em}
 .psb::after{content:"";position:absolute;left:50%;top:11px;width:122px;height:35px;margin-left:-61px;border-radius:20px;background:#000}
 .psb svg{display:block}.psb .ic{display:flex;gap:6px;align-items:center}
-.pvp{position:absolute;left:0;top:47px;width:390px;height:844px;overflow:hidden;background:#F6F5F3}
+.pvp{position:absolute;left:0;top:47px;width:390px;height:844px;overflow:hidden;background:linear-gradient(var(--pbar) 0 60px,#F6F5F3 60px calc(100% - 60px),var(--ptab) calc(100% - 60px))}
 .psc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .psc::-webkit-scrollbar{display:none}
 .pct{position:relative;width:390px}
 .pct > img,.pov > img{display:block;width:390px;height:auto;user-select:none;-webkit-user-drag:none}
-.pfx{position:absolute;left:0;width:390px;pointer-events:none}
+.pfx{position:absolute;left:0;width:390px;pointer-events:none;z-index:1}
 .pfx img{display:block;width:390px;height:100%}
 .pfx .hs{pointer-events:auto}
 .pov{position:absolute;inset:0;z-index:5}
@@ -621,7 +621,7 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
 @keyframes pOv{from{opacity:0}}
 .pct.fade{animation:pFade .22s ease}
 @keyframes pFade{from{opacity:.35}}
-.phm{position:absolute;left:0;top:891px;width:390px;height:24px;background:var(--ptab)}
+.phm{position:absolute;left:0;top:890px;z-index:2;width:390px;height:25px;background:var(--ptab)}
 .phm::after{content:"";position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:#fff}
 .pdim{position:absolute;left:0;width:390px;background:#000;opacity:0;pointer-events:none;transition:opacity .26s;z-index:6}
 .pdev.ov .pdim{opacity:var(--pdim)}
