@@ -250,6 +250,18 @@ body:has(#lock:not(.gone)) :is(.desk,.menubar,.dock,.win){visibility:hidden}
 .shot-head b{font:800 22px/1.1 var(--f-display);font-stretch:108%;letter-spacing:-.015em;overflow-wrap:break-word;min-width:0}
 .shot-head p{margin:0;font-size:13.5px;color:var(--ink-soft)}
 .shot-img{position:relative}
+.ba{position:relative;overflow:hidden;border-radius:10px;user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:ew-resize}
+.ba img{width:100%;height:auto;display:block;pointer-events:none}
+.ba-b{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.ba-h{position:absolute;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:var(--ink,#1e1a1f);pointer-events:none}
+.ba-h i{position:absolute;top:50%;left:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--ink,#1e1a1f),0 6px 16px rgba(0,0,0,.18)}
+.ba-h i::before,.ba-h i::after{content:"";position:absolute;top:50%;width:0;height:0;margin-top:-5px;border:5px solid transparent}
+.ba-h i::before{left:6px;border-right-color:var(--ink,#1e1a1f)}.ba-h i::after{right:6px;border-left-color:var(--ink,#1e1a1f)}
+.ba-t{position:absolute;top:12px;padding:4px 10px;border-radius:99px;font:600 12px/1.4 var(--sans,inherit);background:rgba(30,26,31,.82);color:#fff;pointer-events:none}
+.ba-t.l{left:12px}.ba-t.r{right:12px;background:#2F55D4}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:ew-resize;touch-action:pan-y}
+.ba input:focus-visible + *, .ba:has(input:focus-visible){outline:2px solid #2F55D4;outline-offset:3px}
+.ba-hint{margin:10px 2px 0;font-size:13px;opacity:.6}
 .shot-img img{width:100%;height:auto;display:block}
 .pin{position:absolute;transform:translate(-50%,-100%);width:30px;height:30px;padding:0;border:0;background:none;cursor:pointer;z-index:2}
 .pin > span:first-child{display:grid;place-items:center;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--hot);color:#fff;
@@ -758,7 +770,7 @@ html[data-theme="dark"] .mb.ccb[aria-expanded="true"]{color:#141116}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-<script src="i18n.js?v=28a1"></script>
+<script src="i18n.js?v=28b2"></script>
 <script>
 (() => {
 const $ = (s, r = document) => r.querySelector(s);
@@ -913,6 +925,7 @@ const CASES = {
                {x:46,y:87,t:'Left out on purpose: paid promotion and ranking boosts. The platform had to stay open to every type of organizer.'} ] },
       { id:'flows', label:'User flows', img:'img/cases/kyiv/05.webp', w:2000, h:3327, title:'Two flows, mapped separately.', text:'I mapped discovery and publishing separately.' },
       { id:'wires', label:'Wireframes', img:'img/cases/kyiv/06.webp', w:2000, h:3507, title:'Wireframes for both sides.', text:'Desktop wireframes before the visual direction.' },
+      { id:'ba', label:'Before and after', ba:{ before:'img/cases/kyiv/ba-wire.webp', after:'img/cases/kyiv/ba-final.webp', w:1440, h:1411 } },
       { id:'discovery', label:'Discovery', img:'img/cases/kyiv/08.webp', w:1400, h:5731, title:'Finding something to do.', text:'Event discovery and browsing screens, in a visual direction rooted in Kyiv’s event culture.' },
       { id:'create', label:'Create an event', img:'img/cases/kyiv/09.webp', w:2000, h:4341, title:'Four steps, always in view.', text:'An event has a lot of details, and an organizer is often one person with a day job. So the form is split into a visible sequence.',
         pins:[ {x:27,y:33.5,t:'The camera from the homepage collage sits in the upload area, so the form still feels like Kyiv Events.'},
@@ -1160,7 +1173,12 @@ function caseWin(key){
       <div data-id="${f.id}"><div class="frame-l">${f.label}${f.pins?` · ${f.pins.length} comments`:''}</div>
         <div class="frame shot">
           ${f.title?`<div class="shot-head"><b>${f.title}</b><p>${f.text}</p></div>`:''}
-          <div class="shot-img"><img src="${f.img}" alt="${f.alt||f.label}" loading="lazy" width="${f.w}" height="${f.h}">${pinsHtml(f)}</div>
+          ${f.ba?`<div class="ba" style="--p:50%"><img src="${f.ba.after}" alt="Final design" loading="lazy" width="${f.ba.w}" height="${f.ba.h}">
+            <div class="ba-b"><img src="${f.ba.before}" alt="Wireframe" loading="lazy" width="${f.ba.w}" height="${f.ba.h}"></div>
+            <span class="ba-t l">Wireframe</span><span class="ba-t r">Final design</span>
+            <div class="ba-h" aria-hidden="true"><i></i></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Drag to compare."></div><p class="ba-hint">Drag to compare.</p>`
+          :`<div class="shot-img"><img src="${f.img}" alt="${f.alt||f.label}" loading="lazy" width="${f.w}" height="${f.h}">${pinsHtml(f)}</div>`}
         </div></div>`).join('')
     : `<div data-id="process"><div class="frame-l">Process</div><div class="frame"><div class="steps">${c.steps.map(([h,t])=>`<div class="step"><b>${h}</b>${t}</div>`).join('')}</div></div></div>`;
   const brief = rich
@@ -1285,6 +1303,15 @@ const PROTO = { heels: { name:'Choose a pass', start:'schedule', screens:{
   confirm:{ img:'img/proto/heels-confirm.webp', h:844, cap:'The dialog repeats the pass, the method and the amount due before anyone confirms.',
     hs:[ { x:7, y:65.5, w:86, h:7, to:'pass' }, { x:85, y:25, w:12, h:6, to:'plans', anim:'back' } ] }
 } } };
+// before/after slider: the range input handles mouse and keyboard; touch drags anywhere on the image
+document.addEventListener('input', e => { const r=e.target; if (r.matches && r.matches('.ba input')) r.parentNode.style.setProperty('--p', r.value+'%'); });
+(() => { let cur=null;
+  const set = (ba, x) => { const b=ba.getBoundingClientRect(); const v=Math.max(0,Math.min(100,(x-b.left)/b.width*100)); ba.style.setProperty('--p', v+'%'); ba.querySelector('input').value=v; };
+  document.addEventListener('pointerdown', e => { const ba=e.target.closest && e.target.closest('.ba'); if (!ba || e.pointerType==='mouse') return; cur={ba,x:e.clientX,y:e.clientY,on:false}; }, {passive:true});
+  document.addEventListener('pointermove', e => { if (!cur) return; if (!cur.on){ if (Math.abs(e.clientX-cur.x)>6 && Math.abs(e.clientX-cur.x)>Math.abs(e.clientY-cur.y)) cur.on=true; else return; } set(cur.ba, e.clientX); }, {passive:true});
+  addEventListener('pointerup', () => { if (cur && !cur.on) set(cur.ba, cur.x); cur=null; });
+  addEventListener('pointercancel', () => { cur=null; });
+})();
 function present(key){
   const P = PROTO[key]; if (!P || $('.proto')) return;
   const order = Object.keys(P.screens);
