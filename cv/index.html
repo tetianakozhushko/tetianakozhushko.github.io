@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tetiana Kozhushko CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600&display=swap">
+<style>
+/* Calm one-pager: lots of air, one rose aura in the corner, Studio OS only as small details (status line, selection box, traffic lights) */
+@page{size:A4;margin:0}
+:root{
+  --ink:#1E1A1F; --soft:#6B6270; --faint:#A79DA6; --line:rgba(30,26,31,.12);
+  --rose:#B8768A; --sel:#3B5BFF; --ok:#2BB673; --paper:#FBF7F7;
+  --f-d:"Archivo","Helvetica Neue",Arial,sans-serif; --f-m:"JetBrains Mono",ui-monospace,Menlo,monospace; --f-h:"Caveat",cursive;
+}
+*{box-sizing:border-box}
+html{background:#d9cfd3}
+body{margin:0;font:400 9.8px/1.6 var(--f-d);color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+a{color:inherit;text-decoration:none}
+.page{width:210mm;height:297mm;margin:0 auto;position:relative;overflow:hidden;padding:13mm 15mm 11mm;display:flex;flex-direction:column;
+  background:radial-gradient(48% 30% at 100% 0%, #F1D3DA 0%, transparent 70%),radial-gradient(40% 26% at 0% 100%, #E9E3F3 0%, transparent 70%), var(--paper)}
+@media screen{.page{margin:24px auto;box-shadow:0 30px 80px -30px rgba(60,30,45,.5)}}
+
+.status{display:flex;align-items:center;gap:14px;font:500 7.2px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.lights{display:flex;gap:4px}.lights i{width:7px;height:7px;border-radius:50%}
+.lights i:nth-child(1){background:#FF5F57}.lights i:nth-child(2){background:#FEBC2E}.lights i:nth-child(3){background:#28C840}
+.status .sp{flex:1}
+.status .on{display:inline-flex;align-items:center;gap:6px;color:var(--ink)}
+.status .on::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 52mm;gap:10mm;margin-top:12mm}
+.name{margin:0;line-height:.8}
+.name img{display:block;width:70mm;height:auto;margin:0 0 -2.4mm -2mm}
+.name .last{display:block;font:900 30px/.9 var(--f-d);font-stretch:125%;letter-spacing:-.035em;text-transform:uppercase}
+.role{position:relative;display:inline-block;margin-top:5mm;padding:2px 7px;font:600 12px var(--f-d);outline:1px solid var(--sel)}
+.role::before,.role::after{content:"";position:absolute;width:4px;height:4px;background:#fff;border:1px solid var(--sel)}
+.role::before{left:-3px;top:-3px}.role::after{right:-3px;bottom:-3px}
+.lede{font-size:10.6px;line-height:1.6;margin:4.5mm 0 0;max-width:112mm}
+.lede b{font-weight:600}
+.photo{position:relative;justify-self:end;width:50mm;padding:2.8mm 2.8mm 10mm;background:#fff;transform:rotate(3deg);border:.6px solid var(--line);margin-top:1mm;align-self:start}
+.photo img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+.photo span{position:absolute;left:0;right:0;bottom:2mm;text-align:center;font:600 15px var(--f-h)}
+
+.contacts{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:9mm;padding-top:3.5mm;border-top:.6px solid var(--line);font-size:9px}
+.contacts span{color:var(--faint);font:500 7px var(--f-m);letter-spacing:.1em;text-transform:uppercase;margin-right:5px}
+
+/* sections */
+.sec{margin-top:12mm}
+.h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3.5mm}
+.h h2{margin:0;font:700 12.5px var(--f-d);letter-spacing:-.005em}
+.h h2 em{font:600 15px var(--f-h);font-style:normal;color:var(--rose);margin-left:3px}
+.h span{font:500 7px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+.work{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4mm}
+.f{display:grid;gap:2mm}
+.f img{width:100%;aspect-ratio:808/632;object-fit:cover;border-radius:3px;border:.6px solid var(--line)}
+.f b{font-size:9.2px;font-weight:600;line-height:1.2}
+.f small{display:block;font:500 7px var(--f-m);color:var(--soft);letter-spacing:.04em;margin-top:1px}
+
+.cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:11mm}
+.jobs{display:grid;gap:5.5mm}
+.job .when{font:500 7px var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.job .when b{color:var(--ok);font-weight:500}
+.job h3{margin:.6mm 0 .8mm;font:600 10.2px var(--f-d)}
+.job h3 span{font-weight:400;color:var(--rose)}
+.job p{margin:0;font-size:9.2px;line-height:1.55;color:#3a333c}
+.promo{display:inline-block;margin-top:1.4mm;font:500 6.8px var(--f-m);letter-spacing:.06em;text-transform:uppercase;color:var(--sel)}
+
+.list{margin:0;padding:0;list-style:none;display:grid;gap:2.2mm;font-size:9.2px}
+.list li{display:flex;gap:7px;align-items:center}
+.list li::before{content:"";flex:none;width:5px;height:5px;border:1px solid var(--rose);transform:rotate(45deg)}
+.lab{font:500 7px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:5mm 0 2mm}
+.plain{font-size:9.2px;line-height:1.6;margin:0}
+.plain span{color:var(--soft)}
+
+.foot{margin-top:auto;display:flex;justify-content:space-between;font:500 7px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="status">
+    <span class="lights"><i></i><i></i><i></i></span>
+    <span>tetiana.os / cv-2026</span>
+    <span class="sp"></span>
+    <span class="on">Open to full-time &amp; freelance</span>
+    <span>Warsaw · remote</span>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1 class="name"><img src="../img/tetiana.webp" alt="Tetiana"><span class="last">Kozhushko</span></h1>
+      <span class="role">UI/UX &amp; Product Web Designer</span>
+      <p class="lede">I design products people understand without a tutorial. At GRC Trail I was <b>the only designer</b> on a compliance platform, from structure to handoff. I also <b>designed and built a live booking app</b> for my own dance classes.</p>
+    </div>
+    <div class="photo"><img src="../img/portrait.jpg" alt="Tetiana Kozhushko"><span>hi, that's me</span></div>
+  </section>
+
+  <nav class="contacts">
+    <a href="mailto:tetianakozhushko12@gmail.com"><span>Email</span>tetianakozhushko12@gmail.com</a>
+    <a href="https://www.linkedin.com/in/tetiana-kozhushko"><span>LinkedIn</span>in/tetiana-kozhushko</a>
+    <a href="https://www.behance.net/tetianakozhushko"><span>Behance</span>behance.net/tetianakozhushko</a>
+    <a href="https://tetianakozhushko.github.io"><span>Portfolio</span>tetianakozhushko.github.io</a>
+  </nav>
+
+  <section class="sec">
+    <div class="h"><h2>Selected <em>work</em></h2><span>click a cover to open the case</span></div>
+    <div class="work">
+      <a class="f" href="https://www.behance.net/gallery/258265587/GRC-Trail-B2B-Compliance-SaaS-Product-Design"><img src="../img/grc.jpg" alt=""><div><b>GRC Trail</b><small>B2B SaaS · only designer</small></div></a>
+      <a class="f" href="https://www.behance.net/gallery/258265475/Tati-Heels-Dance-Booking-Telegram-Mini-App-UXUI"><img src="../img/heels.jpg" alt=""><div><b>Tati Heels</b><small>Mini App · design + build</small></div></a>
+      <a class="f" href="https://www.behance.net/gallery/258265465/What-About-Tours-Travel-Platform-UXUI-Case-Study"><img src="../img/wat.jpg" alt=""><div><b>What About Tours</b><small>Client · web + mobile</small></div></a>
+      <a class="f" href="https://www.behance.net/gallery/258265257/Kyiv-Events-Event-Discovery-Publishing-UXUI"><img src="../img/kyiv.jpg" alt=""><div><b>Kyiv Events</b><small>Website</small></div></a>
+      <a class="f" href="https://www.behance.net/gallery/258264949/LumiBook-Beauty-Booking-App-UXUI-Case-Study"><img src="../img/lumi.jpg" alt=""><div><b>LumiBook</b><small>iOS app</small></div></a>
+    </div>
+  </section>
+
+  <div class="cols sec">
+    <section>
+      <div class="h"><h2>Experience</h2><span>newest first</span></div>
+      <div class="jobs">
+        <div class="job"><div class="when">Oct 2025 – now · <b>current</b></div>
+          <h3>UI/UX Designer <span>· ACW Soft Solutions</span></h3>
+          <p>Web and mobile apps for the clients of a software house, from the first flow to the final spec. UX audits, prototype testing with teams and clients, tidy component libraries and developer handoff.</p>
+          <span class="promo">↑ Junior → Junior+ after 5 months</span></div>
+        <div class="job"><div class="when">Apr – Sep 2025</div>
+          <h3>Product Designer <span>· GRC Trail</span></h3>
+          <p>The only designer at a compliance startup (GDPR, SOC 2, ISO 27001). Owned the information architecture and every module.</p></div>
+        <div class="job"><div class="when">Aug 2024 – Mar 2025</div>
+          <h3>UI/UX Designer <span>· Move Agency</span></h3>
+          <p>Website layouts and visuals for agency clients, on short deadlines.</p></div>
+        <div class="job"><div class="when">Jan 2023 – Jul 2024</div>
+          <h3>Marketing &amp; PR Manager <span>· Sister's Aroma</span></h3>
+          <p>Content and retouching for a product brand, where my eye for detail comes from.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="h"><h2>Skills</h2></div>
+      <ul class="list">
+        <li>UX audits and competitor analysis</li>
+        <li>Information architecture and user flows</li>
+        <li>Prototypes tested with teams and clients</li>
+        <li>Responsive web and mobile UI</li>
+        <li>Design systems on Auto Layout</li>
+        <li>Handoff and prototyping with AI tools</li>
+      </ul>
+      <div class="lab">Tools</div>
+      <p class="plain">Figma, FigJam, Photoshop, Google Analytics, Mixpanel, Claude Code, ChatGPT</p>
+      <div class="lab">Languages</div>
+      <p class="plain">Ukrainian, Russian <span>native</span> · Polish <span>C1</span> · English <span>B2</span></p>
+      <div class="lab">Education</div>
+      <p class="plain">Vistula University, Warsaw <span>· 2016–2019</span></p>
+    </section>
+  </div>
+
+  <footer class="foot"><span>Tetiana Kozhushko · 2026</span><span>Certificates and full story on LinkedIn</span></footer>
+</div>
+</body>
+</html>
