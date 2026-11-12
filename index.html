@@ -55,6 +55,9 @@ img{max-width:100%;display:block}
   background:radial-gradient(60% 55% at 18% 22%, #F3D4DA 0%, transparent 60%),radial-gradient(55% 60% at 85% 30%, #DCD6F0 0%, transparent 62%),radial-gradient(70% 60% at 55% 95%, #E9B9C4 0%, transparent 60%), #F4E8EA;transition:transform .9s var(--ease), opacity .6s ease .2s}
 .lock::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(26px) saturate(1.2);-webkit-backdrop-filter:blur(26px) saturate(1.2);background:rgba(255,255,255,.18)}
 .lock.gone{transform:translateY(-100%);opacity:0;pointer-events:none}
+/* backgrounds run under Safari's floating bottom bar (large viewport), so the bar sits on the wallpaper, not on a grey strip */
+.wall,.grain,.lock{bottom:auto;height:max(100%, 100lvh)}
+.lock{padding-bottom:calc(max(28px, env(safe-area-inset-bottom)) + max(0px, 100lvh - 100svh))}
 .lock-top{display:grid;gap:4px;justify-items:center}
 .lock-date{font:500 15px var(--f-display);color:var(--ink-soft)}
 .lock-time{font:200 clamp(96px,21vw,220px)/.9 var(--f-display);font-stretch:62%;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
