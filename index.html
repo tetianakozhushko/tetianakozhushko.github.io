@@ -26,7 +26,7 @@
 html,body{height:100%;margin:0}
 html{background:var(--milk)}
 :root{--bar-top:max(8px, env(safe-area-inset-top))}
-body{font:15px/1.55 var(--f-display);color:var(--ink);background:var(--milk);overflow:hidden;-webkit-font-smoothing:antialiased}
+body{font:15px/1.55 var(--f-display);color:var(--ink);background:transparent;overflow:hidden;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--sel);outline-offset:3px;border-radius:6px}
@@ -57,6 +57,8 @@ html:has(#wall[data-w="milk"]){--wp:
   background:radial-gradient(60% 55% at 18% 22%, #F3D4DA 0%, transparent 60%),radial-gradient(55% 60% at 85% 30%, #DCD6F0 0%, transparent 62%),radial-gradient(70% 60% at 55% 95%, #E9B9C4 0%, transparent 60%), #F4E8EA;transition:transform .9s var(--ease), opacity .6s ease .2s}
 .lock::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(26px) saturate(1.2);-webkit-backdrop-filter:blur(26px) saturate(1.2);background:rgba(255,255,255,.18)}
 .lock.gone{transform:translateY(-100%);opacity:0;pointer-events:none}
+/* desktop icons stay hidden behind the lock screen (Safari otherwise shows them under its bottom bar) */
+body:has(#lock:not(.gone)) .desk{visibility:hidden}
 /* backgrounds run under Safari's floating bottom bar (large viewport), so the bar sits on the wallpaper, not on a grey strip */
 .wall,.grain,.lock{bottom:auto;height:max(100%, 100lvh)}
 .lock{padding-bottom:calc(max(28px, env(safe-area-inset-bottom)) + max(0px, 100lvh - 100svh))}
@@ -66,7 +68,9 @@ html:has(#wall[data-w="milk"]){--wp:
   color:rgba(255,255,255,.9);text-shadow:0 2px 30px rgba(120,60,80,.25)}
 .lock-mid{display:grid;gap:14px;justify-items:center}
 .lettering{position:relative;width:min(78vw,460px);line-height:0}
-.lettering img{width:100%;height:auto;filter:drop-shadow(0 2px 1px rgba(40,30,34,.25)) drop-shadow(0 16px 20px rgba(40,20,28,.22))}
+.lettering img{width:100%;height:auto;filter:drop-shadow(0 2px 1px rgba(40,30,34,.25)) drop-shadow(0 16px 20px rgba(40,20,28,.22));
+  /* own layer from the first frame, so iOS Safari doesn't clip the shadow to the image box while it loads */
+  transform:translateZ(0);will-change:transform}
 .lettering::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.85) 49%,rgba(255,255,255,0) 56%) 160% 0/260% 100% no-repeat;
   -webkit-mask:url(img/tetiana.webp) 0 0/100% 100% no-repeat;mask:url(img/tetiana.webp) 0 0/100% 100% no-repeat;
