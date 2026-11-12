@@ -43,7 +43,7 @@ img{max-width:100%;display:block}
 .wall[data-w="milk"]{background:
   radial-gradient(60% 55% at 25% 20%, #FFFFFF 0%, transparent 60%),
   radial-gradient(60% 60% at 80% 85%, #EADDE0 0%, transparent 60%), #F3EEEC}
-.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.18;mix-blend-mode:multiply;
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.09;transform:translateZ(0);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
 
 /* ───────── lock screen ───────── */
@@ -114,10 +114,10 @@ img{max-width:100%;display:block}
 /* ───────── desktop ───────── */
 .desk{position:fixed;inset:0;z-index:2}
 .icon{position:absolute;display:grid;justify-items:center;gap:6px;width:132px;padding:6px;border:0;background:none;cursor:pointer;
-  border-radius:12px;user-select:none;-webkit-user-select:none;touch-action:none;transition:transform .3s var(--ease)}
+  border-radius:12px;user-select:none;-webkit-user-select:none;touch-action:none;transition:transform .3s var(--ease);will-change:transform;transform:translateZ(0);backface-visibility:hidden}
 .icon:hover .obj{transform:translateY(-4px) rotate(var(--tilt,0deg))}
-.icon .obj{transition:transform .35s var(--ease);transform:rotate(var(--tilt,0deg));filter:drop-shadow(0 14px 14px rgba(60,30,45,.28))}
-.icon .lbl{align-self:start;font:500 12px var(--f-display);padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);white-space:nowrap}
+.icon .obj{transition:transform .35s var(--ease);transform:rotate(var(--tilt,0deg));filter:drop-shadow(0 14px 14px rgba(60,30,45,.28));will-change:transform;backface-visibility:hidden}
+.icon .lbl{align-self:start;font:500 12px var(--f-display);padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.72);white-space:nowrap}
 .icon.selected .lbl{background:var(--sel);color:#fff}
 .icon.dragging{transition:none;z-index:5}
 .icon.dragging .obj{transform:scale(1.05) rotate(var(--tilt,0deg))}
@@ -416,7 +416,7 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
   .sticky small .d{display:none}
   .sticky small .m{display:inline!important}
   .mb.np .np-t{max-width:90px}
-  .desk{position:relative;min-height:100%;padding:76px max(16px, env(safe-area-inset-right)) 120px max(16px, env(safe-area-inset-left));
+  .desk{position:relative;min-height:100%;padding:76px max(16px, env(safe-area-inset-right)) calc(120px + var(--mini-h,0px)) max(16px, env(safe-area-inset-left));
     display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 8px;align-content:start}
   .icon{position:static;width:auto;transform:none!important;align-content:start}
   .icon .obj{transform:scale(.78) rotate(var(--tilt,0deg))}
@@ -481,7 +481,7 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
   <button class="mb grav" id="inspBtn" aria-pressed="false" title="Dev Mode · Shift+D">Inspect <span class="tg"></span></button>
   <button class="mb grav kbd-hint" id="kbdBtn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts · ?">⌘K</button>
   <span class="mb clock" id="clock">--:--</span>
-  <button class="mb cta" data-open="contact"><span class="lab">Hire me</span><span aria-hidden="true">↗</span></button>
+  <button class="mb cta" data-open="contact"><span class="lab">Hire me</span><span aria-hidden="true">↗︎</span></button>
 </header>
 
 <!-- DESKTOP -->
@@ -778,7 +778,7 @@ function openThing(key, from){
   if (!spec) return;
   const w = document.createElement('section');
   w.className='win opening'; w.setAttribute('role','dialog'); w.setAttribute('aria-label', spec.title);
-  w.innerHTML = `<div class="titlebar"><div class="lights"><button class="c" aria-label="Close"></button><button class="m" aria-label="Minimize"></button><button class="z" aria-label="Zoom"></button></div><div class="t">${spec.title}</div><button class="expand" aria-label="Expand the player">expand ↗</button></div><div class="wbody">${spec.html}</div>`;
+  w.innerHTML = `<div class="titlebar"><div class="lights"><button class="c" aria-label="Close"></button><button class="m" aria-label="Minimize"></button><button class="z" aria-label="Zoom"></button></div><div class="t">${spec.title}</div><button class="expand" aria-label="Expand the player">expand ↗︎</button></div><div class="wbody">${spec.html}</div>`;
   const W=innerWidth, H=innerHeight, ww=Math.min(spec.w, W-40), hh=Math.min(spec.h, H-110);
   const n = Object.keys(wins).length;
   let left = Math.round((W-ww)/2 + (n%4)*28 - 40), top = Math.round(Math.max(60,(H-hh)/2 - 10 + (n%4)*24));
@@ -808,6 +808,14 @@ function closeWin(key){
   w.classList.add('closing'); delete wins[key]; syncDock();
   setTimeout(()=>w.remove(), reduce?0:280);
 }
+// phone: keep the last row of icons scrollable above the mini player
+let miniRaf=0;
+function syncMiniPad(){ cancelAnimationFrame(miniRaf); miniRaf=requestAnimationFrame(()=>{
+  const m=document.querySelector('.win.mini:not(.closing)');
+  document.documentElement.style.setProperty('--mini-h', m ? m.offsetHeight+'px' : '0px');
+}); }
+new MutationObserver(syncMiniPad).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+addEventListener('resize', syncMiniPad);
 function setMini(w, on){
   const before = w.getBoundingClientRect();
   w.classList.toggle('mini', on);
@@ -882,8 +890,8 @@ function caseWin(key){
       ${c.comment?`<div class="cmt"><img src="img/portrait.jpg" alt=""><div><b>Tetiana</b><p>${c.comment}</p></div></div>`:''}
       ${framesHtml}
       <div data-id="next"><div class="frame-l">Full case</div><div class="frame"><div class="cta-row">
-        <a class="btn" href="${c.link}" target="_blank" rel="noopener">Open the full case on Behance ↗</a>
-        ${c.extra?`<a class="btn ghost" href="${c.extra[1]}" target="_blank" rel="noopener">${c.extra[0]} ↗</a>`:''}
+        <a class="btn" href="${c.link}" target="_blank" rel="noopener">Open the full case on Behance ↗︎</a>
+        ${c.extra?`<a class="btn ghost" href="${c.extra[1]}" target="_blank" rel="noopener">${c.extra[0]} ↗︎</a>`:''}
       </div></div></div>
     </div>
     <aside class="fig-props">
@@ -927,7 +935,7 @@ const CV_PDF = 'cv/Tetiana-Kozhushko-CV.pdf';
 function cvWin(){ return { title:'CV.pdf · Preview', w:760, h:900, html:`
   <div class="pdfv">
     <div class="pdf-tools"><span>Tetiana-Kozhushko-CV.pdf · 1 page · A4</span><span class="sp"></span>
-      <a class="btn ghost" href="${CV_PDF}" target="_blank" rel="noopener">Open in a new tab ↗</a>
+      <a class="btn ghost" href="${CV_PDF}" target="_blank" rel="noopener">Open in a new tab ↗︎</a>
       <a class="btn" href="${CV_PDF}" download="Tetiana-Kozhushko-CV.pdf">Download ↓</a></div>
     <div class="pdf-frame"><a href="${CV_PDF}" target="_blank" rel="noopener" class="pdf-page"><img src="cv/cv-preview.jpg" alt="Tetiana Kozhushko CV, page 1" width="1554" height="2200"></a></div>
   </div>` }; }
@@ -964,9 +972,9 @@ function contactWin(){ return { title:'say-hi.mail', w:640, h:600, html:`
     <h2>Let's make something.</h2>
     <p style="margin:0">Write in English, Polish, Ukrainian or Russian.</p>
     <div class="row"><b>Email</b><code id="em">tetianakozhushko12@gmail.com</code><button class="copy" id="copyEm">Copy</button></div>
-    <div class="row"><b>LinkedIn</b><a href="https://www.linkedin.com/in/tetiana-kozhushko" target="_blank" rel="noopener">in/tetiana-kozhushko ↗</a></div>
-    <div class="row"><b>Behance</b><a href="https://www.behance.net/tetianakozhushko" target="_blank" rel="noopener">behance.net/tetianakozhushko ↗</a></div>
-    <div class="row"><b>CV</b><a href="cv/Tetiana-Kozhushko-CV.pdf" target="_blank" rel="noopener">Tetiana-Kozhushko-CV.pdf ↗</a></div>
+    <div class="row"><b>LinkedIn</b><a href="https://www.linkedin.com/in/tetiana-kozhushko" target="_blank" rel="noopener">in/tetiana-kozhushko ↗︎</a></div>
+    <div class="row"><b>Behance</b><a href="https://www.behance.net/tetianakozhushko" target="_blank" rel="noopener">behance.net/tetianakozhushko ↗︎</a></div>
+    <div class="row"><b>CV</b><a href="cv/Tetiana-Kozhushko-CV.pdf" target="_blank" rel="noopener">Tetiana-Kozhushko-CV.pdf ↗︎</a></div>
     <div class="ways">
       <div class="way"><b>Full-time in your team</b>Junior or Associate Product Designer, UI/UX Designer. Warsaw office or remote.</div>
       <div class="way"><b>Freelance on your project</b>Send me the brief, even a messy one. I'll come back with flows, UI and a Figma file developers can build from.</div>
@@ -1250,7 +1258,7 @@ const WALLS=['rose','dusk','milk'];
 desk.addEventListener('contextmenu', e => {
   if (isPhone()) return; e.preventDefault(); closeCtx();
   ctx=document.createElement('div'); ctx.className='ctx'; ctx.setAttribute('role','menu');
-  ctx.innerHTML = `<button data-a="clean">Clean up desktop</button><button data-a="wall">Change wallpaper</button><button data-a="grav">${gravityOn?'Turn gravity off':'Turn gravity on'}</button><hr><button data-a="music">${playing?'Pause music':'Play work music'}</button><button data-a="mail">Hire Tetiana <kbd>↗</kbd></button>`;
+  ctx.innerHTML = `<button data-a="clean">Clean up desktop</button><button data-a="wall">Change wallpaper</button><button data-a="grav">${gravityOn?'Turn gravity off':'Turn gravity on'}</button><hr><button data-a="music">${playing?'Pause music':'Play work music'}</button><button data-a="mail">Hire Tetiana <kbd>↗︎</kbd></button>`;
   document.body.appendChild(ctx);
   ctx.style.left=Math.min(e.clientX, innerWidth-230)+'px'; ctx.style.top=Math.min(e.clientY, innerHeight-200)+'px';
   ctx.onclick = ev => { const a=ev.target.closest('button')?.dataset.a; closeCtx();
