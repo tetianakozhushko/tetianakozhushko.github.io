@@ -300,7 +300,7 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
 /* visitor cursor */
 @media (pointer:fine){
   body.cc, body.cc *{cursor:none!important}
-  body.cc input, body.cc textarea{cursor:text!important}
+  body.cc input:not([type=range]), body.cc textarea{cursor:text!important}
   body.cc.inspect, body.cc.inspect *{cursor:crosshair!important}
 }
 .ucur{position:fixed;left:0;top:0;z-index:300;pointer-events:none;opacity:0;transition:opacity .2s}
@@ -1238,7 +1238,7 @@ function showKeys(){
 }
 $('#kbdBtn').onclick = openPalette;
 addEventListener('keydown', e => {
-  const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'');
+  const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'') && document.activeElement.type!=='range';
   if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); unlock(); veil?closeVeil():openPalette(); return; }
   if (typing || e.metaKey || e.ctrlKey || e.altKey || !lock.hidden) return;
   if (e.key==='Escape' && veil){ closeVeil(); e.stopImmediatePropagation(); return; }
@@ -1259,7 +1259,7 @@ if (matchMedia('(pointer:fine)').matches){
   const you=$('.you',uc);
   const HINTS=[
     ['.pin','read my note'],['.icon','double-click to open'],['.sticky','drag me'],['.titlebar','drag the window'],
-    ['.track','play'],['#pp','play / pause'],['.layer','jump to frame'],['.knob','slide'],['#gravBtn','gravity!'],
+    ['.track','play'],['#pp','play / pause'],['#volR','volume'],['#mute','sound on / off'],['.layer','jump to frame'],['.knob','slide'],['#gravBtn','gravity!'],
     ['#inspBtn','Dev Mode'],['.f, a.btn, a[href]','open'],['button','click']
   ];
   let lastHint='';
