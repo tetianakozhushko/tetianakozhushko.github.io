@@ -589,7 +589,7 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
 .proto-bar button{height:32px;padding:0 12px;border-radius:8px;border:0;background:rgba(255,255,255,.1);color:inherit;font:500 12px var(--f-display);cursor:pointer}
 .proto-bar button:hover{background:rgba(255,255,255,.18)}
 .proto-stage{display:grid;place-items:center;min-height:0;padding:8px 16px}
-.proto-phone{position:relative;height:min(78vh,760px);aspect-ratio:430/934;border-radius:44px;padding:10px;background:#0c0a0d;box-shadow:0 0 0 1.5px #3a333c,0 40px 80px -30px rgba(0,0,0,.8)}
+.proto-phone{position:relative;height:min(78vh,760px);aspect-ratio:390/844;border-radius:44px;padding:10px;background:#0c0a0d;box-shadow:0 0 0 1.5px #3a333c,0 40px 80px -30px rgba(0,0,0,.8)}
 .proto-scr{position:relative;width:100%;height:100%;border-radius:35px;overflow:hidden;background:#222}
 .proto-scr .pv{position:absolute;left:0;top:0;width:100%}
 .proto-scr .pv img{display:block;width:100%;height:auto}
@@ -758,7 +758,7 @@ html[data-theme="dark"] .mb.ccb[aria-expanded="true"]{color:#141116}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-<script src="i18n.js?v=27f8"></script>
+<script src="i18n.js?v=28a1"></script>
 <script>
 (() => {
 const $ = (s, r = document) => r.querySelector(s);
@@ -1271,21 +1271,19 @@ function trashWin(){ return { title:'Trash', w:980, h:760, html:`<div class="tra
   init(w){ $$('[data-case]', w).forEach(b => b.onclick = () => openThing(b.dataset.case)); } }; }
 
 /* prototype: real Tati Heels screens from the case, wired into a clickable flow */
-const TAB = (sched, book, pass) => [
-  { x:0, y:86, w:20, h:12, to:sched }, { x:20, y:86, w:20, h:12, to:book }, { x:40, y:86, w:20, h:12, to:pass } ];
-const PROTO = { heels: { name:'Book a class', start:'schedule', screens:{
-  schedule:{ img:'img/proto/heels-schedule.webp', h:936, cap:'Students can filter the schedule and see what they need to know before booking.',
-    hs:[ { x:52, y:66, w:41, h:8, to:'bookings' }, ...TAB(null,'bookings','plans') ] },
-  bookings:{ img:'img/proto/heels-bookings.webp', h:934, cap:'The booking card holds the class, the payment status and every next action.',
-    hs:[ { x:36, y:54.5, w:35, h:9, to:'door', anim:'up' }, ...TAB('schedule',null,'plans') ] },
-  door:{ img:'img/proto/heels-door.webp', h:926, cap:'Getting here opens from the booking. The door code copies in one tap. The real code is hidden in this case.',
-    hs:[ { x:83, y:7.5, w:13, h:8, to:'bookings', anim:'back' }, { x:76, y:33.5, w:15, h:9, toast:'Door code copied. The real code is hidden in this case.' } ] },
-  plans:{ img:'img/proto/heels-plans.webp', h:968, cap:'Plan cards show the class count, validity and price.',
-    hs:[ { x:9, y:51, w:85, h:8.5, to:'confirm', anim:'up' }, ...TAB('schedule','bookings',null) ] },
-  confirm:{ img:'img/proto/heels-confirm.webp', h:954, cap:'The dialog repeats the pass, the method and the amount due before anyone confirms.',
-    hs:[ { x:6, y:67, w:90, h:9, to:'pass' }, { x:85, y:27, w:12, h:7, to:'plans', anim:'back' } ] },
-  pass:{ img:'img/proto/heels-pass.webp', h:930, cap:'The pass opens on one number: classes left.',
-    hs:[ ...TAB('schedule','bookings',null) ] }
+const TAB = (sched, book, pass) => [ { x:0, y:91, w:20, h:9, to:sched }, { x:20, y:91, w:20, h:9, to:book }, { x:40, y:91, w:20, h:9, to:pass } ];
+// screens captured from the live app at 390×844; hotspots are percentages of that frame
+const PROTO = { heels: { name:'Choose a pass', start:'schedule', screens:{
+  schedule:{ img:'img/proto/heels-schedule.webp', h:844, cap:'Students can filter the schedule and see what they need to know before booking.',
+    hs:[ ...TAB(null,'bookings','pass') ] },
+  bookings:{ img:'img/proto/heels-bookings.webp', h:844, cap:'The booking card holds the class, the payment status and every next action.',
+    hs:[ ...TAB('schedule',null,'pass') ] },
+  pass:{ img:'img/proto/heels-pass.webp', h:844, cap:'The pass opens on one number: classes left.',
+    hs:[ { x:9, y:28, w:34, h:7, to:'plans' }, ...TAB('schedule','bookings',null) ] },
+  plans:{ img:'img/proto/heels-plans.webp', h:844, cap:'Plan cards show the class count, validity and price.',
+    hs:[ { x:11, y:46.5, w:78, h:7, to:'confirm', anim:'up' }, ...TAB('schedule','bookings',null) ] },
+  confirm:{ img:'img/proto/heels-confirm.webp', h:844, cap:'The dialog repeats the pass, the method and the amount due before anyone confirms.',
+    hs:[ { x:7, y:65.5, w:86, h:7, to:'pass' }, { x:85, y:25, w:12, h:6, to:'plans', anim:'back' } ] }
 } } };
 function present(key){
   const P = PROTO[key]; if (!P || $('.proto')) return;
@@ -1301,8 +1299,8 @@ function present(key){
   order.forEach(k => { const i=new Image(); i.src=P.screens[k].img; });
   const go = (id, anim) => {
     const S = P.screens[id];
-    scr.innerHTML = `<div class="pv ${reduce?'':(anim||'')}" style="aspect-ratio:430/${S.h}"><img src="${S.img}" alt="${CASES[key].title}: ${id} screen">` +
-      S.hs.filter(h=>h.to!==null).map((h,i)=>`<button class="hs" data-i="${i}" style="left:${h.x}%;top:${h.y}%;width:${h.w}%;height:${h.h}%" aria-label="${h.to?('Go to '+h.to):'Copy the door code'}"></button>`).join('') + `</div>`;
+    scr.innerHTML = `<div class="pv ${reduce?'':(anim||'')}" style="aspect-ratio:390/${S.h}"><img src="${S.img}" alt="${CASES[key].title}: ${id} screen">` +
+      S.hs.filter(h=>h.to!==null).map((h,i)=>`<button class="hs" data-i="${i}" style="left:${h.x}%;top:${h.y}%;width:${h.w}%;height:${h.h}%" aria-label="Go to ${h.to}"></button>`).join('') + `</div>`;
     const hs = S.hs.filter(h=>h.to!==null);
     $$('.hs', scr).forEach(b => b.onclick = e => { e.stopPropagation(); const h=hs[+b.dataset.i]; if (h.toast) toast(h.toast); else go(h.to, h.anim||'in'); });
     cap.innerHTML = `<small>${order.indexOf(id)+1} / ${order.length}</small>${S.cap}`;

@@ -404,7 +404,7 @@ window.I18N = {
 "LumiBook: Final direction": ["LumiBook: ostateczny kierunek", "LumiBook: фінальний напрям"],
 
 /* prototype */
-"Prototype · Book a class": ["Prototyp · Rezerwacja zajęć", "Прототип · Запис на заняття"],
+"Prototype · Choose a pass": ["Prototyp · Wybór karnetu", "Прототип · Вибір абонемента"],
 "Restart": ["Od nowa", "Спочатку"],
 "Close · Esc": ["Zamknij · Esc", "Закрити · Esc"],
 "Close the prototype": ["Zamknij prototyp", "Закрити прототип"],
