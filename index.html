@@ -303,9 +303,9 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
 
 /* visitor cursor */
 @media (pointer:fine){
-  body.cc, body.cc *{cursor:none!important}
-  body.cc input:not([type=range]), body.cc textarea{cursor:text!important}
-  body.cc.inspect, body.cc.inspect *{cursor:crosshair!important}
+  body.ccur, body.ccur *{cursor:none!important}
+  body.ccur input:not([type=range]), body.ccur textarea{cursor:text!important}
+  body.ccur.inspect, body.ccur.inspect *{cursor:crosshair!important}
 }
 .ucur{position:fixed;left:0;top:0;z-index:300;pointer-events:none;opacity:0;transition:opacity .2s}
 .ucur.show{opacity:1}
@@ -1617,7 +1617,7 @@ addEventListener('keydown', e => {
 
 /* ───────── visitor's own cursor ───────── */
 if (matchMedia('(pointer:fine)').matches){
-  document.body.classList.add('cc');
+  document.body.classList.add('ccur');
   const uc=document.createElement('div'); uc.className='ucur'; uc.setAttribute('aria-hidden','true');
   uc.innerHTML=`<svg width="18" height="20" viewBox="0 0 18 20"><path d="M1 1l15 7-6.5 2L7 18z" fill="#3B5BFF" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg><span class="you">You</span>`;
   document.body.appendChild(uc);
