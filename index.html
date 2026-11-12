@@ -449,7 +449,6 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
   .shot-head{grid-template-columns:1fr;gap:6px;padding:16px}
   .shot-head b{font-size:20px}
   .trashw{padding:16px}
-  .trashw .th .btn{margin-left:0}
   .about{grid-template-columns:1fr;padding:18px}
   .about .polaroid{width:170px}
   .dock{display:none}
@@ -457,7 +456,6 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
 
 /* ───────── dark theme: same tokens, night values. Paper objects on the desk stay paper. ───────── */
 .mb.thm{width:34px;padding:0;justify-content:center}
-.mb.lng{min-width:34px;padding:0 8px;justify-content:center;font:600 11px var(--f-mono);letter-spacing:.06em}
 .mb.thm svg{width:16px;height:16px}
 .mb.thm .sun{display:none}
 html[data-theme="dark"] .mb.thm .sun{display:block}
@@ -532,10 +530,10 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
 .icon:hover .trash .s1{transform:rotate(-20deg) translateY(-6px)}
 .icon:hover .trash .s2{transform:rotate(14deg) translateY(-8px)}
 .trashw{height:100%;overflow:auto;padding:20px 22px 28px;display:grid;gap:30px;align-content:start}
-.trashw .th{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.trashw .th{display:grid;justify-items:start;gap:6px;margin-bottom:14px}
 .trashw .th small{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
 .trashw h3{margin:0;font:700 20px/1.15 var(--f-display);letter-spacing:-.01em}
-.trashw .th .btn{margin-left:auto;height:32px;font-size:12px}
+.trashw .th .btn{height:36px;font-size:13px;margin-top:6px}
 .trashw .lead{margin:-4px 0 14px;max-width:620px;color:var(--ink-soft);font-size:13px;line-height:1.5}
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
 .tgrid.tall{grid-template-columns:repeat(auto-fill,minmax(180px,220px))}
@@ -584,7 +582,44 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
   .proto-phone{height:min(70vh,640px);border-radius:36px;padding:7px}
   .proto-scr{border-radius:30px}
 }
-@media (max-width:380px){.mb.np .np-t{display:none}.menubar{gap:6px}.tldr{grid-template-columns:1fr!important}}
+@media (max-width:380px){.mb.np .np-t{display:none}.tldr{grid-template-columns:1fr!important}}
+
+/* ───────── settings sidebar ───────── */
+.mb.ccb svg{width:16px;height:16px}
+.mb.ccb[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+.cc{position:fixed;z-index:60;top:56px;right:max(10px, env(safe-area-inset-right));width:320px;max-height:calc(100% - 72px);overflow:auto;
+  padding:14px 14px 16px;border-radius:20px;background:rgba(255,255,255,.9);backdrop-filter:blur(28px) saturate(1.4);-webkit-backdrop-filter:blur(28px) saturate(1.4);
+  box-shadow:var(--shadow-win);display:grid;gap:16px;align-content:start;transform-origin:top right;animation:ccIn .28s var(--ease)}
+.cc[hidden]{display:none}
+@keyframes ccIn{from{opacity:0;transform:translateY(-6px) scale(.97)}}
+.cc-h{display:flex;align-items:center;justify-content:space-between}
+.cc-h b{font:700 16px var(--f-display)}
+.cc-x{width:36px;height:36px;border-radius:50%;border:0;background:rgba(30,26,31,.06);color:var(--ink);font-size:14px;cursor:pointer}
+.cc h4{margin:0 0 8px;font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.seg{display:flex;gap:4px;padding:4px;border-radius:14px;background:rgba(30,26,31,.06)}
+.seg button{flex:1;min-width:0;height:44px;border:0;border-radius:10px;background:transparent;color:var(--ink);font:500 14px var(--f-display);cursor:pointer;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg button[aria-pressed="true"]{background:var(--paper);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+.cc-row{width:100%;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;margin-top:6px;border:0;border-radius:14px;
+  background:rgba(30,26,31,.05);color:var(--ink);font:500 14px var(--f-display);text-align:left;cursor:pointer}
+.cc-row:first-of-type{margin-top:0}
+.cc-row:hover{background:rgba(30,26,31,.09)}
+.cc-row small{display:block;font-size:12px;color:var(--ink-soft);font-weight:400;margin-top:1px}
+.cc-row .tg{flex:none;width:40px;height:24px;border-radius:12px}
+.cc-row .tg::after{width:18px;height:18px;top:3px;left:3px}
+.cc-row[aria-pressed="true"] .tg::after{transform:translateX(16px)}
+.cc-k{font:600 13px var(--f-mono);color:var(--ink-soft)}
+html[data-theme="dark"] .cc{background:rgba(28,24,30,.94)}
+html[data-theme="dark"] .seg, html[data-theme="dark"] .cc-x{background:rgba(255,255,255,.08)}
+html[data-theme="dark"] .seg button[aria-pressed="true"]{background:#3a333c}
+html[data-theme="dark"] .cc-row{background:rgba(255,255,255,.06)}
+html[data-theme="dark"] .cc-row:hover{background:rgba(255,255,255,.1)}
+html[data-theme="dark"] .mb.ccb[aria-expanded="true"]{color:#141116}
+@media (max-width:760px){
+  .cc{left:max(10px, env(safe-area-inset-left));right:max(10px, env(safe-area-inset-right));width:auto;top:64px}
+  .cc .desk-only{display:none}
+  .mb.ccb .lab{display:none}
+  .mb.ccb{width:44px;padding:0;justify-content:center}
+}
 @keyframes sheetIn{from{transform:translateY(100%)}}
 @keyframes sheetOut{to{transform:translateY(100%)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -629,14 +664,26 @@ html[data-theme="dark"] .trash .bin{background:linear-gradient(#5a525d,#3b353e)}
   </nav>
   <span class="sp"></span>
   <button class="mb np" id="npPill" data-open="playlist" aria-label="Open the playlist"><span class="cov"></span><span class="np-t" id="npText">Work music</span><span class="eq"><i></i><i></i><i></i><i></i></span></button>
-  <button class="mb grav" id="gravBtn" aria-pressed="false">Gravity <span class="tg"></span></button>
-  <button class="mb grav" id="inspBtn" aria-pressed="false" title="Dev Mode · Shift+D">Inspect <span class="tg"></span></button>
-  <button class="mb grav kbd-hint" id="kbdBtn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts · ?">⌘K</button>
-  <button class="mb lng" id="langBtn" aria-label="Language" title="Language · L">EN</button>
-  <button class="mb thm" id="themeBtn" aria-pressed="false" aria-label="Dark mode" title="Dark mode · T"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
   <span class="mb clock" id="clock" translate="no">--:--</span>
+  <button class="mb ccb" id="ccBtn" aria-expanded="false" aria-controls="cc" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="lab">Settings</span></button>
   <button class="mb cta" data-open="contact"><span class="lab">Hire me</span><span aria-hidden="true">↗︎</span></button>
 </header>
+
+
+<!-- SETTINGS SIDEBAR -->
+<aside class="cc" id="cc" aria-label="Settings" hidden>
+  <div class="cc-h"><b>Settings</b><button class="cc-x" id="ccX" aria-label="Close">✕</button></div>
+  <section><h4>Appearance</h4>
+    <div class="seg"><button data-theme-set="light" aria-pressed="true">Light</button><button data-theme-set="dark" aria-pressed="false">Dark</button></div></section>
+  <section><h4>Language</h4>
+    <div class="seg"><button data-lang="en" aria-pressed="true" translate="no">English</button><button data-lang="pl" aria-pressed="false" translate="no">Polski</button><button data-lang="uk" aria-pressed="false" translate="no">Українська</button></div></section>
+  <section><h4>Extras</h4>
+    <button class="cc-row desk-only" id="gravBtn" aria-pressed="false"><span>Gravity<small>Throw the desktop around</small></span><span class="tg"></span></button>
+    <button class="cc-row desk-only" id="inspBtn" aria-pressed="false"><span>Dev Mode<small>Sizes, colours and spacing on hover</small></span><span class="tg"></span></button>
+    <button class="cc-row" id="wallBtn"><span>Change wallpaper</span><span class="cc-k">◐</span></button>
+    <button class="cc-row desk-only" id="kbdBtn"><span>Quick actions</span><span class="cc-k" translate="no">⌘K</span></button>
+  </section>
+</aside>
 
 <!-- DESKTOP -->
 <main class="desk" id="desk" aria-label="Desktop">
@@ -668,8 +715,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ───────── languages: English source text, Polish and Ukrainian from i18n.js ───────── */
 const LANGS=['en','pl','uk'], LCODE={en:'EN',pl:'PL',uk:'UA'}, LOC={en:'en-GB',pl:'pl-PL',uk:'uk-UA'};
-let lang=(()=>{ try{ const v=localStorage.getItem('tos-lang'); if (LANGS.includes(v)) return v; }catch(e){}
-  const n=(navigator.language||'en').slice(0,2).toLowerCase(); return n==='pl'?'pl':n==='uk'?'uk':'en'; })();
+let lang=(()=>{ try{ const v=localStorage.getItem('tos-lang-choice'); if (LANGS.includes(v)) return v; }catch(e){} return 'en'; })();
 const AFFIX=/^([\s·•]*)(.*?)([\s←-⇿︎️♪\u{1F300}-\u{1FAFF}]*)$/su;
 const keepWs=(o,t)=>o.match(/^\s*/)[0]+t+o.match(/\s*$/)[0];
 function T(en){
@@ -693,13 +739,13 @@ function trTree(root){
 new MutationObserver(ms => { for (const m of ms){
   if (m.type==='characterData') trText(m.target); else if (m.type==='attributes') trAttr(m.target, m.attributeName); else m.addedNodes.forEach(trTree);
 } }).observe(document.body, { subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:TA });
-function setLang(l){
+function setLang(l, chosen){
   lang=l; document.documentElement.lang = l;
-  try{ localStorage.setItem('tos-lang', l); }catch(e){}
+  if (chosen) try{ localStorage.setItem('tos-lang-choice', l); }catch(e){}
   trTree(document.body); tick();
-  const b=$('#langBtn'); if (b) b.textContent=LCODE[l];
+  $$('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang===l));
 }
-const nextLang = () => setLang(LANGS[(LANGS.indexOf(lang)+1)%LANGS.length]);
+const nextLang = () => setLang(LANGS[(LANGS.indexOf(lang)+1)%LANGS.length], true);
 
 /* ───────── data ───────── */
 const BE = 'https://www.behance.net/gallery/';
@@ -1339,7 +1385,7 @@ function setGravity(on){
   if (on) startPhysics(); else { stopPhysics(); placeIcons(); }
   toast(on ? 'Gravity on. Grab the things, throw them around' : 'Gravity off. Everything back in place');
 }
-gBtn.onclick = () => setGravity(!gravityOn);
+gBtn.onclick = () => { setCC(false); setGravity(!gravityOn); };
 function startPhysics(){
   if (typeof Matter==='undefined' || isPhone()) { toast('Gravity needs a bigger screen'); gravityOn=false; gBtn.setAttribute('aria-pressed','false'); return; }
   const { Engine, Bodies, Composite, Mouse, MouseConstraint, Body } = Matter;
@@ -1392,10 +1438,9 @@ const TOUR = [
   { el:()=>iconEls.grc, say:'start here, it\'s my biggest one 👋' },
   { el:()=>iconEls.heels, say:'this one is live, you can try it' },
   { el:()=>iconEls.playlist, say:'what I listen to while I work ♪' },
-  { el:()=>$('#gravBtn'), say:'try this one 😉' },
-  { el:()=>$('#inspBtn'), say:'Dev Mode: hover anything after' },
+  { el:()=>$('#ccBtn'), say:'settings: dark mode, language, gravity' },
   { el:()=>iconEls.cv, say:'one-page CV, ready to download' },
-  { el:()=>$('#kbdBtn'), say:'press ? for shortcuts' }
+  { el:()=>$('#clock'), say:'press ? for shortcuts' }
 ];
 let tourI=0, tourT=null, userBusy=0;
 function placeCursor(x,y){ mcur.style.transform=`translate(${x}px,${y}px)`; }
@@ -1433,7 +1478,7 @@ function setInspect(on){
     toast('Dev Mode on. Hover anything to see its specs');
   } else { [inspBox,inspCard,...inspLines].forEach(x=>x&&x.remove()); inspBox=inspCard=null; inspLines=[]; }
 }
-iBtn.onclick = () => setInspect(!inspectOn);
+iBtn.onclick = () => { setCC(false); setInspect(!inspectOn); };
 const INSPECTABLE = '.icon,.mb,.win,.frame,.btn,.chip,.layer,.sticky,.dock button,.track,.cbtn,.row,.fact,.way,.pin,.lbl,.case-h,.tldr > div,.shot-head b';
 const NAMES = { icon:'Desktop icon', mb:'Menu bar item', win:'Window', frame:'Frame', btn:'Button', chip:'Tag', layer:'Layer row', sticky:'Sticky note', track:'Track row', cbtn:'Player button', row:'Contact row', fact:'Fact card', way:'Option card', pin:'Comment pin', lbl:'Icon label' };
 addEventListener('pointermove', e => {
@@ -1478,9 +1523,9 @@ const ACTIONS = [
   { ic:'☾', t:'Toggle dark mode', k:'T', run:()=>setTheme(document.documentElement.dataset.theme!=='dark') },
   { ic:'▶', t:'Present the Tati Heels prototype', run:()=>present('heels') },
   { ic:'⌫', t:'Open Trash · discarded concepts', run:()=>openThing('trash') },
-  { ic:'EN', t:'English', run:()=>setLang('en') },
-  { ic:'PL', t:'Polski', run:()=>setLang('pl') },
-  { ic:'UA', t:'Українська', run:()=>setLang('uk') },
+  { ic:'EN', t:'English', run:()=>setLang('en', true) },
+  { ic:'PL', t:'Polski', run:()=>setLang('pl', true) },
+  { ic:'UA', t:'Українська', run:()=>setLang('uk', true) },
   { ic:'⌘', t:'Keyboard shortcuts', k:'?', run:()=>showKeys() }
 ];
 let veil=null;
@@ -1513,17 +1558,24 @@ function showKeys(){
     <dt><kbd>?</kbd></dt><dd>This list</dd></dl><p>On a Windows keyboard, use Ctrl instead of ⌘.</p></div>`;
   document.body.appendChild(veil); veil.onclick=()=>closeVeil();
 }
-$('#kbdBtn').onclick = openPalette;
+$('#kbdBtn').onclick = () => { setCC(false); openPalette(); };
 function setTheme(dark, animate=true){
   const h=document.documentElement;
   if (animate && !reduce){ h.classList.add('theme-anim'); clearTimeout(setTheme._t); setTheme._t=setTimeout(()=>h.classList.remove('theme-anim'),600); }
   if (dark) h.dataset.theme='dark'; else delete h.dataset.theme;
-  const b=$('#themeBtn'); b.setAttribute('aria-pressed', dark); b.setAttribute('aria-label', dark?'Light mode':'Dark mode'); b.title=(dark?'Light mode':'Dark mode')+' · T';
+  $$('[data-theme-set]').forEach(b => b.setAttribute('aria-pressed', (b.dataset.themeSet==='dark')===dark));
   try{ localStorage.setItem('tos-theme', dark?'dark':'light'); }catch(e){}
 }
 setTheme(document.documentElement.dataset.theme==='dark', false);
-$('#themeBtn').onclick = () => setTheme(document.documentElement.dataset.theme!=='dark');
-$('#langBtn').onclick = nextLang;
+$$('[data-theme-set]').forEach(b => b.onclick = () => setTheme(b.dataset.themeSet==='dark'));
+$$('[data-lang]').forEach(b => b.onclick = () => setLang(b.dataset.lang, true));
+const cc=$('#cc'), ccBtn=$('#ccBtn');
+function setCC(open){ cc.hidden=!open; ccBtn.setAttribute('aria-expanded', open); if (open) setTimeout(()=>$('#ccX').focus({preventScroll:true}), 30); }
+ccBtn.onclick = e => { e.stopPropagation(); setCC(cc.hidden); };
+$('#ccX').onclick = () => setCC(false);
+$('#wallBtn').onclick = () => { const w=$('#wall'); w.dataset.w = WALLS[(WALLS.indexOf(w.dataset.w)+1)%WALLS.length]; };
+addEventListener('pointerdown', e => { if (!cc.hidden && !cc.contains(e.target) && !ccBtn.contains(e.target)) setCC(false); });
+addEventListener('keydown', e => { if (e.key==='Escape' && !cc.hidden){ e.stopImmediatePropagation(); setCC(false); ccBtn.focus(); } }, true);
 addEventListener('keydown', e => {
   const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'') && document.activeElement.type!=='range';
   if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); unlock(); veil?closeVeil():openPalette(); return; }
@@ -1548,7 +1600,7 @@ if (matchMedia('(pointer:fine)').matches){
   const you=$('.you',uc);
   const HINTS=[
     ['.pin','read my note'],['.icon','double-click to open'],['.sticky','drag me'],['.titlebar','drag the window'],
-    ['.track','play'],['#pp','play / pause'],['#volR','volume'],['#mute','sound on / off'],['.layer','jump to frame'],['.knob','slide'],['#gravBtn','gravity!'],['#themeBtn','lights off / on'],['#langBtn','switch language'],
+    ['.track','play'],['#pp','play / pause'],['#volR','volume'],['#mute','sound on / off'],['.layer','jump to frame'],['.knob','slide'],['#gravBtn','gravity!'],['#ccBtn','settings'],['.seg button','choose'],
     ['#inspBtn','Dev Mode'],['.f, a.btn, a[href]','open'],['button','click']
   ];
   let lastHint='';
