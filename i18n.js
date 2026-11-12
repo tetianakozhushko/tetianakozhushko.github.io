@@ -390,6 +390,8 @@ window.I18N = {
 "Wireframe": ["Wireframe", "Вайрфрейм"],
 "Final design": ["Projekt finalny", "Фінальний дизайн"],
 "Drag to compare.": ["Przeciągnij, aby porównać.", "Потягни, щоб порівняти."],
+"Same step, sharper focus.": ["Ten sam krok, ostrzejszy fokus.", "Той самий крок, чіткіший фокус."],
+"The final screen keeps the wireframe’s order of fields. The cover upload moved to the left and grew, so the event’s image leads the step.": ["Finalny ekran zachowuje kolejność pól z wireframe’u. Wgrywanie okładki przeniosło się na lewo i urosło, więc to obraz wydarzenia prowadzi ten krok.", "Фінальний екран зберігає порядок полів з вайрфрейму. Завантаження обкладинки перемістилося ліворуч і стало більшим, тож крок відкриває зображення події."],
 "It says what it is.": ["Mówi, czym jest.", "Каже, що це."],
 "It talks to you.": ["Mówi do ciebie.", "Говорить до тебе."],
 "It asks you out.": ["Zaprasza cię na wyjście.", "Кличе тебе на вихід."],
@@ -408,7 +410,10 @@ window.I18N = {
 "LumiBook: Final direction": ["LumiBook: ostateczny kierunek", "LumiBook: фінальний напрям"],
 
 /* prototype */
-"Prototype · Choose a pass": ["Prototyp · Wybór karnetu", "Прототип · Вибір абонемента"],
+"Prototype · Student app": ["Prototyp · Aplikacja dla kursantek", "Прототип · Застосунок для учениць"],
+"In the live app this sends data, so the prototype stops here.": ["W prawdziwej aplikacji to wysyła dane, więc prototyp zatrzymuje się tutaj.", "У справжньому застосунку це надсилає дані, тож прототип тут зупиняється."],
+"Manage is the studio’s admin side with client data, so it stays hidden here.": ["Manage to panel studia z danymi klientek, więc tutaj jest ukryty.", "Manage — це адмінка студії з даними клієнток, тому тут вона прихована."],
+"Loading…": ["Ładowanie…", "Завантаження…"],
 "Restart": ["Od nowa", "Спочатку"],
 "Close · Esc": ["Zamknij · Esc", "Закрити · Esc"],
 "Close the prototype": ["Zamknij prototyp", "Закрити прототип"],
