@@ -461,6 +461,23 @@ kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 
 .gravity .sticky{transition:transform .8s var(--ease)}
 
 /* ───────── phone: home screen ───────── */
+/* ───────── tablets ───────── */
+/* menu bar: the music pill keeps its cover only, then the section menus step aside (the dock has them) */
+@media (min-width:761px) and (max-width:1100px){ .mb.np .np-t{display:none} .mb.np{gap:6px} }
+@media (min-width:761px) and (max-width:920px){ .menus{display:none} }
+/* case file: two columns, the inspector sits under the layers instead of squeezing the canvas */
+@media (min-width:761px) and (max-width:1000px){
+  .fig{grid-template-columns:170px minmax(0,1fr);grid-template-rows:minmax(0,auto) minmax(140px,1fr)}
+  .fig-side{grid-column:1;grid-row:1;overflow:auto;border-bottom:1px solid var(--line)}
+  .fig-props{grid-column:1;grid-row:2;border-left:0;border-right:1px solid var(--line)}
+  .fig-canvas{grid-column:2;grid-row:1/3;padding:22px}
+  .about{grid-template-columns:160px minmax(0,1fr);gap:20px;padding:22px}
+}
+/* touch tablets: one tap opens, like on a phone */
+@media (min-width:761px) and (pointer:coarse){
+  .sticky small .d{display:none}
+  .sticky small .m{display:inline!important}
+}
 @media (max-width:760px){
   /* the page itself never scrolls on phones: only the desktop layer does, so Safari's bar always sits on the page-background wallpaper */
   body{overflow:hidden}
@@ -817,7 +834,7 @@ html[data-theme="dark"] .mb.ccb[aria-expanded="true"]{color:#141116}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="i18n.js?v=30"></script>
+<script src="i18n.js?v=31"></script>
 <script>
 (() => {
 const $ = (s, r = document) => r.querySelector(s);
@@ -1077,6 +1094,7 @@ function placeIcons(){
 placeIcons(); addEventListener('resize', () => { if(!gravityOn) placeIcons(); });
 
 // drag icons + sticky; click selects, double-click (or single tap/Enter) opens
+let lastPtr='mouse'; addEventListener('pointerdown', e => { lastPtr=e.pointerType||'mouse'; }, { capture:true, passive:true });
 function makeDraggable(el, onOpen){
   let sx, sy, ox, oy, moved=false, down=false;
   el.addEventListener('pointerdown', e => {
@@ -1095,7 +1113,7 @@ function makeDraggable(el, onOpen){
     if (moved) { moved=false; return; }
     $$('.icon.selected').forEach(x=>x.classList.remove('selected'));
     el.classList.add('selected');
-    if (onOpen && (isPhone() || e.detail===0)) onOpen(); // tap on phone, Enter/Space on keyboard
+    if (onOpen && (isPhone() || e.detail===0 || lastPtr==='touch' || lastPtr==='pen')) onOpen(); // tap on a touch screen, Enter/Space on keyboard
   });
   if (onOpen) el.addEventListener('dblclick', onOpen);
 }
@@ -1121,7 +1139,9 @@ function openThing(key, from){
   const w = document.createElement('section');
   w.className='win opening'; w.setAttribute('role','dialog'); w.setAttribute('aria-label', spec.title);
   w.innerHTML = `<div class="titlebar"><div class="lights"><button class="c" aria-label="Close"></button><button class="m" aria-label="Minimize"></button><button class="z" aria-label="Zoom"></button></div><div class="t">${spec.title}</div><button class="expand" aria-label="Expand the player">expand ↗︎</button></div><div class="wbody">${spec.html}</div>`;
-  const W=innerWidth, H=innerHeight, ww=Math.min(spec.w, W-40), hh=Math.min(spec.h, H-110);
+  const W=innerWidth, H=innerHeight, ww=Math.min(spec.w, W-40);
+  // a portrait tablet has height to spare: big windows use it, clear of the menu bar and the dock
+  const hh = (W<=1100 && H>W && spec.w>=600) ? H-190 : Math.min(spec.h, H-110);
   const n = Object.keys(wins).length;
   let left = Math.round((W-ww)/2 + (n%4)*28 - 40), top = Math.round(Math.max(60,(H-hh)/2 - 10 + (n%4)*24));
   left = Math.max(8, Math.min(W-ww-8, left));
@@ -1609,14 +1629,15 @@ const TOUR = [
   { el:()=>iconEls.playlist, say:'what I listen to while I work ♪' },
   { el:()=>$('#ccBtn'), say:'settings: dark mode, language, gravity' },
   { el:()=>iconEls.cv, say:'one-page CV, ready to download' },
-  { el:()=>$('#clock'), say:'press ? for shortcuts' }
+  { el:()=>$('#ccBtn'), say:'press ? for shortcuts' }
 ];
 let tourI=0, tourT=null, userBusy=0;
 // the cursor chases the live position of its target every frame, so it still lands on a folder the visitor moved
 let cx=innerWidth*.45, cy=innerHeight*.7, tx=cx, ty=cy, tgt=null, lastT=0, rafOn=false;
 function placeCursor(x,y){ mcur.style.transform=`translate(${x}px,${y}px)`; }
 placeCursor(cx, cy);
-function aimAt(el){ const r=el.getBoundingClientRect(); if (!r.width && !r.height) return false; tx=r.left+r.width*.62; ty=r.top+r.height*.55; return true; }
+// aim at the drawing itself (folder, cassette, document), not the whole button with its label and padding
+function aimAt(el){ const o=(el.querySelector && el.querySelector('.obj')) || el; const r=o.getBoundingClientRect(); if (!r.width && !r.height) return false; tx=r.left+r.width*.55; ty=r.top+r.height*.5; return true; }
 function curTick(t){
   const dt = Math.min(64, t-(lastT||t)); lastT=t;
   if (tgt && tgt.isConnected) aimAt(tgt);
@@ -1760,16 +1781,19 @@ addEventListener('pointerdown', e => { if (!cc.hidden && !cc.contains(e.target) 
 addEventListener('keydown', e => { if (e.key==='Escape' && !cc.hidden){ e.stopImmediatePropagation(); setCC(false); ccBtn.focus(); } }, true);
 addEventListener('keydown', e => {
   const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'') && document.activeElement.type!=='range';
-  if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); unlock(); veil?closeVeil():openPalette(); return; }
+  // the physical key, so shortcuts also work with a Ukrainian, Polish or Russian keyboard layout
+  const k = e.code && e.code.startsWith('Key') ? e.code.slice(3).toLowerCase() : (e.key||'').toLowerCase();
+  if ((e.metaKey||e.ctrlKey) && k==='k'){ e.preventDefault(); unlock(); veil?closeVeil():openPalette(); return; }
   if (typing || e.metaKey || e.ctrlKey || e.altKey || !lock.hidden) return;
   if (e.key==='Escape' && veil){ closeVeil(); e.stopImmediatePropagation(); return; }
-  if (e.key==='?'){ showKeys(); return; }
-  if (e.shiftKey && e.key.toLowerCase()==='d'){ setInspect(!inspectOn); return; }
-  if (e.key==='v' || e.key==='V'){ if (inspectOn) setInspect(false); closeVeil(); return; }
-  if (e.key==='g' || e.key==='G'){ gBtn.onclick(); return; }
-  if (e.key==='t' || e.key==='T'){ setTheme(document.documentElement.dataset.theme!=='dark'); return; }
-  if (e.key==='l' || e.key==='L'){ nextLang(); return; }
-  if (e.key==='c' || e.key==='C'){ const top=Object.values(wins).sort((a,b)=>b.style.zIndex-a.style.zIndex)[0]; const t=top&&$('.cmt-toggle',top); if(t) t.click(); return; }
+  if (e.key==='?' || (e.shiftKey && e.code==='Slash')){ showKeys(); return; }
+  if (e.shiftKey && k==='d'){ setInspect(!inspectOn); return; }
+  if (e.shiftKey) return;
+  if (k==='v'){ if (inspectOn) setInspect(false); closeVeil(); return; }
+  if (k==='g'){ closeVeil(); gBtn.onclick(); return; }
+  if (k==='t'){ setTheme(document.documentElement.dataset.theme!=='dark'); return; }
+  if (k==='l'){ nextLang(); return; }
+  if (k==='c'){ const top=Object.values(wins).sort((a,b)=>b.style.zIndex-a.style.zIndex)[0]; const t=top&&$('.cmt-toggle',top); if(t) t.click(); else toast('Open a case to see the comments'); return; }
 }, true);
 
 

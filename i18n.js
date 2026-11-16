@@ -457,6 +457,7 @@ window.I18N = {
 "Email copied": ["E-mail skopiowany", "Email скопійовано"],
 "Gravity needs a bigger screen": ["Grawitacja potrzebuje większego ekranu", "Гравітації потрібен більший екран"],
 "Loading physics…": ["Ładuję fizykę…", "Завантажую фізику…"],
+"Open a case to see the comments": ["Otwórz case, żeby zobaczyć komentarze", "Відкрийте кейс, щоб побачити коментарі"],
 "Could not load physics": ["Nie udało się załadować fizyki", "Не вдалося завантажити фізику"],
 "Loading the desktop…": ["Ładuję pulpit…", "Завантажую робочий стіл…"],
 "Music keeps playing in the mini player": ["Muzyka gra dalej w mini odtwarzaczu", "Музика грає далі в міні-плеєрі"],
