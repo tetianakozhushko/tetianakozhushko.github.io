@@ -56,7 +56,8 @@ html:has(#wall[data-w="milk"]){--wp:
 .lock{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
   padding:max(28px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));text-align:center;
   transition:transform .9s var(--ease), opacity .6s ease .2s}
-.lock::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(26px) saturate(1.2);-webkit-backdrop-filter:blur(26px) saturate(1.2);background:rgba(255,255,255,.18)}
+.lock::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(255,255,255,.18)}
+body:has(#lock:not(.gone)) .grain{opacity:.035}
 .lock.gone{transform:translateY(-100%);opacity:0;pointer-events:none}
 /* desktop icons stay hidden behind the lock screen (Safari otherwise shows them under its bottom bar) */
 body:has(#lock:not(.gone)) :is(.desk,.menubar,.dock,.win){visibility:hidden}
@@ -96,6 +97,11 @@ body:has(#lock:not(.gone)) :is(.desk,.menubar,.dock,.win){visibility:hidden}
 .knob{position:absolute;left:5px;top:5px;width:52px;height:52px;border-radius:50%;background:var(--paper);border:0;cursor:grab;
   display:grid;place-items:center;box-shadow:0 6px 16px -6px rgba(60,30,45,.5);touch-action:none}
 .knob:active{cursor:grabbing}
+.slider.loading::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,transparent,var(--hot),transparent) 0 0/40% 100% no-repeat;animation:lload 1.1s ease-in-out infinite}
+.slider.loading .slider-text{animation:shine 1.2s linear infinite;padding-left:0;padding-right:56px}
+.slider.loading .knob{animation:kpulse 1.1s ease-in-out infinite}
+@keyframes lload{from{background-position:-40% 0}to{background-position:140% 0}}
+@keyframes kpulse{50%{box-shadow:0 0 0 8px rgba(224,86,126,.18),0 6px 16px -6px rgba(60,30,45,.5)}}
 .skip{background:none;border:0;font:500 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer;padding:6px 10px}
 .skip:hover{color:var(--ink)}
 
@@ -286,7 +292,10 @@ body:has(#lock:not(.gone)) :is(.desk,.menubar,.dock,.win){visibility:hidden}
 .hint{margin:6px 0 0;font-size:11px;color:var(--ink-soft)}
 
 /* multiplayer cursor */
-.mcur{position:fixed;left:0;top:0;z-index:9;pointer-events:none;transition:transform 1.6s cubic-bezier(.45,.05,.2,1);will-change:transform}
+.mcur{position:fixed;left:0;top:0;z-index:9;pointer-events:none;will-change:transform}
+.mcur.flip .tag{left:auto;right:2px;border-radius:10px 4px 10px 10px}
+.mcur.flip .say{left:auto;right:2px;border-radius:12px 4px 12px 12px}
+.mcur.up .say{top:auto;bottom:6px}
 .mcur svg{display:block;filter:drop-shadow(0 2px 3px rgba(60,30,45,.35))}
 .mcur .tag{position:absolute;left:16px;top:18px;width:max-content;padding:3px 8px;border-radius:4px 10px 10px 10px;background:var(--hot);color:#fff;font:600 11px var(--f-display);white-space:nowrap}
 .mcur .say{position:absolute;left:16px;top:42px;width:max-content;max-width:260px;padding:7px 10px;border-radius:4px 12px 12px 12px;background:#fff;color:var(--ink);
@@ -733,6 +742,30 @@ html[data-theme="dark"] .mb.ccb[aria-expanded="true"]{color:#141116}
     <button class="skip" id="skipBtn">Skip intro · or press Enter</button>
   </div>
 </section>
+<script>
+/* lock screen: works before the rest of the page has loaded */
+(function(){
+  var lock=document.getElementById('lock'), knob=document.getElementById('knob'), slider=document.getElementById('slider'), txt=slider.querySelector('.slider-text');
+  var L={pl:'Ładuję pulpit…',uk:'Завантажую робочий стіл…'}, sx=null, max=0;
+  try{ if (sessionStorage.getItem('unlocked')) { lock.className+=' gone'; lock.hidden=true; } }catch(e){}
+  window.requestUnlock=function(){
+    if (window.__unlock) return window.__unlock();
+    if (window.__unlockPending) return; window.__unlockPending=true;
+    var l=null; try{ l=sessionStorage.getItem('tos-lang-choice'); }catch(e){}
+    knob.style.transition='transform .35s cubic-bezier(.2,.9,.25,1)'; knob.style.transform='translateX('+(slider.clientWidth-knob.offsetWidth-10)+'px)';
+    slider.classList.add('loading'); txt.style.opacity=1; txt.textContent=L[l]||'Loading the desktop…';
+  };
+  knob.addEventListener('pointerdown', function(e){ if (window.__unlockPending) return; sx=e.clientX; max=slider.clientWidth-knob.offsetWidth-10; knob.setPointerCapture(e.pointerId); knob.style.transition='none'; });
+  knob.addEventListener('pointermove', function(e){ if (sx===null) return; var x=Math.max(0,Math.min(max,e.clientX-sx)); knob.style.transform='translateX('+x+'px)'; txt.style.opacity=1-x/max; });
+  knob.addEventListener('pointerup', function(e){
+    if (sx===null) return; var x=e.clientX-sx; sx=null; knob.style.transition='transform .35s cubic-bezier(.2,.9,.25,1)';
+    if (x > max*.8 || Math.abs(x)<4) { knob.style.transform='translateX('+max+'px)'; requestUnlock(); }
+    else { knob.style.transform=''; txt.style.opacity=1; }
+  });
+  document.getElementById('skipBtn').onclick=function(){ requestUnlock(); };
+  addEventListener('keydown', function(e){ if (!lock.hidden && !lock.classList.contains('gone') && (e.key==='Enter' || e.key===' ')) { e.preventDefault(); requestUnlock(); } });
+})();
+</script>
 
 <!-- MENU BAR -->
 <header class="menubar" id="menubar">
@@ -784,8 +817,7 @@ html[data-theme="dark"] .mb.ccb[aria-expanded="true"]{color:#141116}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-<script src="i18n.js?v=29a1"></script>
+<script src="i18n.js?v=30"></script>
 <script>
 (() => {
 const $ = (s, r = document) => r.querySelector(s);
@@ -1005,19 +1037,7 @@ function unlock(){
   try{ sessionStorage.setItem('unlocked','1'); }catch(e){}
   setTimeout(()=>{ lock.hidden = true; }, 1000);
 }
-try{ if (sessionStorage.getItem('unlocked')) { lock.classList.add('gone'); lock.hidden = true; } }catch(e){}
-$('#skipBtn').onclick = unlock;
-addEventListener('keydown', e => { if (!lock.hidden && (e.key==='Enter' || e.key===' ')) { e.preventDefault(); unlock(); } });
-(() => {
-  const knob=$('#knob'), slider=$('#slider'); let sx=null, max=0;
-  knob.addEventListener('pointerdown', e => { sx=e.clientX; max=slider.clientWidth-knob.offsetWidth-10; knob.setPointerCapture(e.pointerId); knob.style.transition='none'; });
-  knob.addEventListener('pointermove', e => { if (sx===null) return; const x=Math.max(0,Math.min(max,e.clientX-sx)); knob.style.transform=`translateX(${x}px)`; slider.querySelector('.slider-text').style.opacity=1-x/max; });
-  knob.addEventListener('pointerup', e => {
-    if (sx===null) return; const x=e.clientX-sx; sx=null; knob.style.transition='transform .35s var(--ease)';
-    if (x > max*.8 || Math.abs(x)<4) { knob.style.transform=`translateX(${max}px)`; unlock(); }
-    else { knob.style.transform=''; slider.querySelector('.slider-text').style.opacity=1; }
-  });
-})();
+window.__unlock = unlock;
 
 /* ───────── desktop icons ───────── */
 const desk = $('#desk');
@@ -1529,7 +1549,12 @@ function setGravity(on){
   if (on) startPhysics(); else { stopPhysics(); placeIcons(); }
   toast(on ? 'Gravity on. Grab the things, throw them around' : 'Gravity off. Everything back in place');
 }
-gBtn.onclick = () => { setCC(false); setGravity(!gravityOn); };
+// Matter.js is only fetched the first time Gravity is switched on
+let matterP=null;
+const loadMatter = () => matterP || (matterP = new Promise((ok, no) => { const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js'; s.onload=ok; s.onerror=()=>{ matterP=null; no(); }; document.head.appendChild(s); }));
+gBtn.onclick = async () => { setCC(false);
+  if (!gravityOn && typeof Matter==='undefined' && !isPhone()) { try { toast('Loading physics…'); await loadMatter(); } catch(e){ toast('Could not load physics'); return; } }
+  setGravity(!gravityOn); };
 function startPhysics(){
   if (typeof Matter==='undefined' || isPhone()) { toast('Gravity needs a bigger screen'); gravityOn=false; gBtn.setAttribute('aria-pressed','false'); return; }
   const { Engine, Bodies, Composite, Mouse, MouseConstraint, Body } = Matter;
@@ -1587,18 +1612,31 @@ const TOUR = [
   { el:()=>$('#clock'), say:'press ? for shortcuts' }
 ];
 let tourI=0, tourT=null, userBusy=0;
+// the cursor chases the live position of its target every frame, so it still lands on a folder the visitor moved
+let cx=innerWidth*.45, cy=innerHeight*.7, tx=cx, ty=cy, tgt=null, lastT=0, rafOn=false;
 function placeCursor(x,y){ mcur.style.transform=`translate(${x}px,${y}px)`; }
-placeCursor(innerWidth*.45, innerHeight*.7);
+placeCursor(cx, cy);
+function aimAt(el){ const r=el.getBoundingClientRect(); if (!r.width && !r.height) return false; tx=r.left+r.width*.62; ty=r.top+r.height*.55; return true; }
+function curTick(t){
+  const dt = Math.min(64, t-(lastT||t)); lastT=t;
+  if (tgt && tgt.isConnected) aimAt(tgt);
+  const k = 1 - Math.exp(-dt/320); cx += (tx-cx)*k; cy += (ty-cy)*k;
+  placeCursor(cx, cy);
+  // the bubble opens to whichever side has room, the arrow itself is never shifted
+  mcur.classList.toggle('flip', cx > innerWidth-280); mcur.classList.toggle('up', cy > innerHeight-120);
+  if (Math.abs(tx-cx)+Math.abs(ty-cy) > .3 || tgt) requestAnimationFrame(curTick); else { rafOn=false; lastT=0; }
+}
+function moveTo(el){ tgt=el; if (!rafOn){ rafOn=true; requestAnimationFrame(curTick); } }
 function tourStep(){
   clearTimeout(tourT);
-  if (isPhone() || reduce || !lock.hidden || gravityOn) { tourT=setTimeout(tourStep, 4000); return; }
+  if (isPhone() || reduce || !lock.hidden || gravityOn) { tgt=null; tourT=setTimeout(tourStep, 4000); return; }
   if (Date.now()-userBusy < 2500) { tourT=setTimeout(tourStep, 2000); return; }
-  const st = TOUR[tourI++ % TOUR.length]; const el = st.el(); if (!el) { tourT=setTimeout(tourStep, 500); return; }
-  const r = el.getBoundingClientRect();
-  const x = Math.min(innerWidth-240, r.left + r.width*.62), y = Math.min(innerHeight-90, r.top + r.height*.55);
-  mcur.classList.remove('talk'); placeCursor(x,y);
+  const st = TOUR[tourI++ % TOUR.length]; const el = st.el(); if (!el || !aimAt(el)) { tourT=setTimeout(tourStep, 500); return; }
+  mcur.classList.remove('talk'); moveTo(el);
   setTimeout(()=>{ $('.say', mcur).textContent=st.say; mcur.classList.add('talk'); }, 1700);
   setTimeout(()=>mcur.classList.remove('talk'), 5200);
+  // let go before the next stop so the loop can rest
+  setTimeout(()=>{ if (tgt===el) tgt=null; }, 7400);
   tourT=setTimeout(tourStep, 7600);
 }
 addEventListener('pointermove', () => { userBusy = Date.now(); }, { passive:true });
@@ -1662,7 +1700,7 @@ const ACTIONS = [
   { ic:'⤓', t:'Open CV.pdf', run:()=>openThing('cv') },
   { ic:'@', t:'Contact · hire me', run:()=>openThing('contact') },
   { ic:'⎔', t:'Toggle Dev Mode (Inspect)', k:'⇧D', run:()=>setInspect(!inspectOn) },
-  { ic:'↓', t:'Toggle Gravity', k:'G', run:()=>setGravity(!gravityOn) },
+  { ic:'↓', t:'Toggle Gravity', k:'G', run:()=>gBtn.onclick() },
   { ic:'◐', t:'Change wallpaper', run:()=>{ const w=$('#wall'); w.dataset.w = WALLS[(WALLS.indexOf(w.dataset.w)+1)%WALLS.length]; } },
   { ic:'☾', t:'Toggle dark mode', k:'T', run:()=>setTheme(document.documentElement.dataset.theme!=='dark') },
   { ic:'▶', t:'Present the Tati Heels prototype', run:()=>present('heels') },
@@ -1728,7 +1766,7 @@ addEventListener('keydown', e => {
   if (e.key==='?'){ showKeys(); return; }
   if (e.shiftKey && e.key.toLowerCase()==='d'){ setInspect(!inspectOn); return; }
   if (e.key==='v' || e.key==='V'){ if (inspectOn) setInspect(false); closeVeil(); return; }
-  if (e.key==='g' || e.key==='G'){ setGravity(!gravityOn); return; }
+  if (e.key==='g' || e.key==='G'){ gBtn.onclick(); return; }
   if (e.key==='t' || e.key==='T'){ setTheme(document.documentElement.dataset.theme!=='dark'); return; }
   if (e.key==='l' || e.key==='L'){ nextLang(); return; }
   if (e.key==='c' || e.key==='C'){ const top=Object.values(wins).sort((a,b)=>b.style.zIndex-a.style.zIndex)[0]; const t=top&&$('.cmt-toggle',top); if(t) t.click(); return; }
@@ -1773,7 +1811,7 @@ desk.addEventListener('contextmenu', e => {
   ctx.onclick = ev => { const a=ev.target.closest('button')?.dataset.a; closeCtx();
     if (a==='clean'){ setGravity(false); placeIcons(); toast('Tidy.'); }
     if (a==='wall'){ const w=$('#wall'); w.dataset.w = WALLS[(WALLS.indexOf(w.dataset.w)+1)%WALLS.length]; }
-    if (a==='grav') setGravity(!gravityOn);
+    if (a==='grav') gBtn.onclick();
     if (a==='music'){ if (playing) player.pauseVideo(); else { openThing('playlist'); start(cur); } }
     if (a==='mail') openThing('contact');
   };
@@ -1781,6 +1819,8 @@ desk.addEventListener('contextmenu', e => {
 function closeCtx(){ ctx && ctx.remove(); ctx=null; }
 addEventListener('pointerdown', e => { if (ctx && !ctx.contains(e.target)) closeCtx(); });
 setLang(lang);
+// the visitor slid before the desktop was ready: open it now
+if (window.__unlockPending) setTimeout(unlock, 150);
 })();
 </script>
 </body>
